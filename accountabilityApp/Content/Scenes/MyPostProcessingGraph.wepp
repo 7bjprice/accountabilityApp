@@ -1,0 +1,80 @@
+!Evergine.Assets.Exporters.PostProcessingGraphMetaFile,Evergine.Assets
+Id: 32b86352-fd1d-433a-90fd-47f2cbb8eeb9
+DefaultProfile:
+  ExcludeAsset: false
+  Name: null
+  Platform: Undefined
+ExportAsRaw: false
+PostProcessingGraphInfo:
+  Id: f650870e-096a-4a03-b4a5-9645cbfceb9d
+  graphDescription:
+    Id: 011cbf65-1c14-4396-9440-a3570a76a788
+    StartNode:
+      Name: Render
+      Id: 33a44259-42c2-4b2b-b04d-5e9115b32335
+      Position:
+        X: 97.0
+        Y: 303.0
+      EffectID: 00000000-0000-0000-0000-000000000000
+      Inputs: []
+      Outputs:
+        - Name: ColorTexture
+          Id: 771acda3-c308-4271-bc37-caba1e601f7a
+          Type: !Evergine.Framework.Graphics.PostProcessingNodePortLoadableType%601[[Evergine.Common.Graphics.Texture,Evergine.Common]],Evergine.Framework
+            Offset: 0
+            ResourceType: Texture
+            Slot: 0
+            ValueID: 00000000-0000-0000-0000-000000000000
+          Hidden: false
+          ConnectedWith:
+            - nodeId: f38943f2-993a-441d-890d-6deab7cc94d0
+              portId: 89d85525-a7ae-474a-88cb-4943ebf29902
+          FixedSize:
+            X: 0.0
+            Y: 0.0
+          ReferencedInput: 
+          ScaleFactor: 1.0
+          pixelFormat: Unknown
+        - Name: DepthTexture
+          Id: 40125f34-80c4-45bf-bc9c-4e38219f4925
+          Type: !Evergine.Framework.Graphics.PostProcessingNodePortLoadableType%601[[Evergine.Common.Graphics.Texture,Evergine.Common]],Evergine.Framework
+            Offset: 0
+            ResourceType: Texture
+            Slot: 0
+            ValueID: 00000000-0000-0000-0000-000000000000
+          Hidden: false
+          ConnectedWith: []
+          FixedSize:
+            X: 0.0
+            Y: 0.0
+          ReferencedInput: 
+          ScaleFactor: 1.0
+          pixelFormat: Unknown
+      ThreadGroupDivisorX: 8
+      ThreadGroupDivisorY: 8
+      ThreadGroupDivisorZ: 1
+    EndNode:
+      Name: Screen
+      Id: f38943f2-993a-441d-890d-6deab7cc94d0
+      Position:
+        X: 793.0
+        Y: 303.0
+      EffectID: 00000000-0000-0000-0000-000000000000
+      Inputs:
+        - Name: ColorTexture
+          Id: 89d85525-a7ae-474a-88cb-4943ebf29902
+          Type: !Evergine.Framework.Graphics.PostProcessingNodePortLoadableType%601[[Evergine.Common.Graphics.Texture,Evergine.Common]],Evergine.Framework
+            Offset: 0
+            ResourceType: Texture
+            Slot: 0
+            ValueID: 00000000-0000-0000-0000-000000000000
+          Hidden: false
+          ConnectedWith:
+            nodeId: 33a44259-42c2-4b2b-b04d-5e9115b32335
+            portId: 771acda3-c308-4271-bc37-caba1e601f7a
+      Outputs: []
+      ThreadGroupDivisorX: 8
+      ThreadGroupDivisorY: 8
+      ThreadGroupDivisorZ: 1
+    Nodes: []
+Profiles: {}

@@ -18,8 +18,14 @@ namespace accountabilityApp
         public sealed class Scenes
         {
             
+            /// <summary> Asset Path (Scenes/MyPostProcessingGraph.wepp) </summary>
+            public static readonly Guid MyPostProcessingGraph = new Guid("32b86352-fd1d-433a-90fd-47f2cbb8eeb9");
+            
             /// <summary> Asset Path (Scenes/MyScene.wescene.wesc) </summary>
-            public static readonly Guid MyScene_wescene = new Guid("f64f2fd3-8963-417b-86df-961cfb7c9fca");
+            public static readonly Guid MyScene_wescene = new Guid("c4e223fc-0233-4f6c-b723-f8c9be3113d4");
+            
+            /// <summary> Asset Path (Scenes/MyScene(1).wescene.wesc) </summary>
+            public static readonly Guid MyScene_1_wescene = new Guid("3aadbdcb-2a5c-496f-8e41-902c22a85c83");
         }
         
         public sealed class Computes
