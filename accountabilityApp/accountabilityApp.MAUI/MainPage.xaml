@@ -5,7 +5,35 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:evergine="clr-namespace:accountabilityApp.MAUI.Evergine">
     <Grid>
+
         <Label Text="This is Evergine running within MAUI" />
         <evergine:EvergineView x:Name="evergineView" />
+        <Image  Source="dotnet_bot.png"
+                WidthRequest="400"
+                HeightRequest="400"
+                Aspect="AspectFit"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+
+        <!-- Bottom row with 3 equal buttons -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*"
+          VerticalOptions="End">
+
+            <Button Text="Budgets"
+                Grid.Column="0"
+                HeightRequest="80"
+                FontSize="Header"/>
+
+            <Button Text="Home"
+                Grid.Column="1"
+                HeightRequest="80"
+                FontSize="Header"/>
+
+            <Button Text="Goals"
+                Grid.Column="2"
+                HeightRequest="80"
+                FontSize="Header"/>
+        </Grid>
+
     </Grid>
 </ContentPage>
