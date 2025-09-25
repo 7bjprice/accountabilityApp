@@ -13,10 +13,14 @@
           "System.Memory": "4.6.0"
         },
         "compile": {
-          "lib/net8.0/Evergine.Bullet.dll": {}
+          "lib/net8.0/Evergine.Bullet.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net8.0/Evergine.Bullet.dll": {}
+          "lib/net8.0/Evergine.Bullet.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Evergine.BulletSharpPInvoke/2023.11.28.20": {
@@ -45,10 +49,14 @@
           "System.Runtime.CompilerServices.Unsafe": "6.1.0"
         },
         "compile": {
-          "lib/net8.0/Evergine.Common.dll": {}
+          "lib/net8.0/Evergine.Common.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net8.0/Evergine.Common.dll": {}
+          "lib/net8.0/Evergine.Common.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Evergine.Components/2025.3.18.1522": {
@@ -58,10 +66,14 @@
           "Evergine.Framework": "2025.3.18.1522"
         },
         "compile": {
-          "lib/net8.0/Evergine.Components.dll": {}
+          "lib/net8.0/Evergine.Components.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net8.0/Evergine.Components.dll": {}
+          "lib/net8.0/Evergine.Components.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Evergine.Framework/2025.3.18.1522": {
@@ -72,10 +84,14 @@
           "System.Runtime.CompilerServices.Unsafe": "6.1.0"
         },
         "compile": {
-          "lib/net8.0/Evergine.Framework.dll": {}
+          "lib/net8.0/Evergine.Framework.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net8.0/Evergine.Framework.dll": {}
+          "lib/net8.0/Evergine.Framework.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Evergine.LibBulletc.Natives/2025.4.28.22": {
@@ -131,10 +147,14 @@
           "System.Reflection.TypeExtensions": "4.7.0"
         },
         "compile": {
-          "lib/net8.0/Evergine.Mathematics.dll": {}
+          "lib/net8.0/Evergine.Mathematics.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net8.0/Evergine.Mathematics.dll": {}
+          "lib/net8.0/Evergine.Mathematics.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Evergine.Targets/2025.3.18.1522": {
@@ -149,10 +169,14 @@
           "System.Reflection.TypeExtensions": "4.3.0"
         },
         "compile": {
-          "lib/netstandard2.0/Evergine.Yaml.dll": {}
+          "lib/netstandard2.0/Evergine.Yaml.dll": {
+            "related": ".pdb"
+          }
         },
         "runtime": {
-          "lib/netstandard2.0/Evergine.Yaml.dll": {}
+          "lib/netstandard2.0/Evergine.Yaml.dll": {
+            "related": ".pdb"
+          }
         }
       },
       "System.Buffers/4.6.0": {
@@ -648,24 +672,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\7bjpr\\.nuget\\packages\\": {},
+    "C:\\Users\\King_Minor\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\7bjpr\\Documents\\CLASSES\\CSE310 - Applied Programming\\accountabilityApp\\accountabilityApp\\accountabilityApp.csproj",
+      "projectUniqueName": "C:\\Users\\King_Minor\\Documents\\BYU-Idaho\\cse-310\\accountabilityApp\\accountabilityApp\\accountabilityApp\\accountabilityApp.csproj",
       "projectName": "accountabilityApp",
-      "projectPath": "C:\\Users\\7bjpr\\Documents\\CLASSES\\CSE310 - Applied Programming\\accountabilityApp\\accountabilityApp\\accountabilityApp.csproj",
-      "packagesPath": "C:\\Users\\7bjpr\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\7bjpr\\Documents\\CLASSES\\CSE310 - Applied Programming\\accountabilityApp\\accountabilityApp\\obj\\",
+      "projectPath": "C:\\Users\\King_Minor\\Documents\\BYU-Idaho\\cse-310\\accountabilityApp\\accountabilityApp\\accountabilityApp\\accountabilityApp.csproj",
+      "packagesPath": "C:\\Users\\King_Minor\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\King_Minor\\Documents\\BYU-Idaho\\cse-310\\accountabilityApp\\accountabilityApp\\accountabilityApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\7bjpr\\Documents\\CLASSES\\CSE310 - Applied Programming\\accountabilityApp\\NuGet.Config",
-        "C:\\Users\\7bjpr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\King_Minor\\Documents\\BYU-Idaho\\cse-310\\accountabilityApp\\accountabilityApp\\NuGet.Config",
+        "C:\\Users\\King_Minor\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -687,7 +711,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {

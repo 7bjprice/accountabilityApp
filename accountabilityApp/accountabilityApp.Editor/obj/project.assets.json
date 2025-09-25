@@ -697,24 +697,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\7bjpr\\.nuget\\packages\\": {},
+    "C:\\Users\\King_Minor\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\7bjpr\\Documents\\CLASSES\\CSE310 - Applied Programming\\accountabilityApp\\accountabilityApp.Editor\\accountabilityApp.Editor.csproj",
+      "projectUniqueName": "C:\\Users\\King_Minor\\Documents\\BYU-Idaho\\cse-310\\accountabilityApp\\accountabilityApp\\accountabilityApp.Editor\\accountabilityApp.Editor.csproj",
       "projectName": "accountabilityApp.Editor",
-      "projectPath": "C:\\Users\\7bjpr\\Documents\\CLASSES\\CSE310 - Applied Programming\\accountabilityApp\\accountabilityApp.Editor\\accountabilityApp.Editor.csproj",
-      "packagesPath": "C:\\Users\\7bjpr\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\7bjpr\\Documents\\CLASSES\\CSE310 - Applied Programming\\accountabilityApp\\accountabilityApp.Editor\\obj\\",
+      "projectPath": "C:\\Users\\King_Minor\\Documents\\BYU-Idaho\\cse-310\\accountabilityApp\\accountabilityApp\\accountabilityApp.Editor\\accountabilityApp.Editor.csproj",
+      "packagesPath": "C:\\Users\\King_Minor\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\King_Minor\\Documents\\BYU-Idaho\\cse-310\\accountabilityApp\\accountabilityApp\\accountabilityApp.Editor\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\7bjpr\\Documents\\CLASSES\\CSE310 - Applied Programming\\accountabilityApp\\NuGet.Config",
-        "C:\\Users\\7bjpr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\King_Minor\\Documents\\BYU-Idaho\\cse-310\\accountabilityApp\\accountabilityApp\\NuGet.Config",
+        "C:\\Users\\King_Minor\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -730,8 +730,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\7bjpr\\Documents\\CLASSES\\CSE310 - Applied Programming\\accountabilityApp\\accountabilityApp\\accountabilityApp.csproj": {
-              "projectPath": "C:\\Users\\7bjpr\\Documents\\CLASSES\\CSE310 - Applied Programming\\accountabilityApp\\accountabilityApp\\accountabilityApp.csproj"
+            "C:\\Users\\King_Minor\\Documents\\BYU-Idaho\\cse-310\\accountabilityApp\\accountabilityApp\\accountabilityApp\\accountabilityApp.csproj": {
+              "projectPath": "C:\\Users\\King_Minor\\Documents\\BYU-Idaho\\cse-310\\accountabilityApp\\accountabilityApp\\accountabilityApp\\accountabilityApp.csproj"
             }
           }
         }
