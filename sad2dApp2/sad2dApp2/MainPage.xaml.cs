@@ -8,5 +8,9 @@
             InitializeComponent();
         }
 
+        private async void OnBudgetClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("///BudgetPage");
+        }
     }
 }

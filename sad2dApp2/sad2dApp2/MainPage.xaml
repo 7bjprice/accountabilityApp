@@ -19,7 +19,8 @@
             <Button Text="Budgets"
                 Grid.Column="0"
                 HeightRequest="80"
-                FontSize="Header"/>
+                FontSize="Header"
+                Clicked="OnBudgetClicked" />
 
             <Button Text="Home"
                 Grid.Column="1"
