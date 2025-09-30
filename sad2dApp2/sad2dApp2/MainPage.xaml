@@ -12,12 +12,8 @@
                     VerticalOptions="Start"/>
             <Label Text="Happiness"/>
             <ProgressBar Progress="1"/>
-            <Label Text="Sleep"/>
+            <Label Text="Wellness"/>
             <ProgressBar Progress="0.2"/>
-            <Label Text="Readyness"/>
-            <ProgressBar Progress="0.8"/>
-            <Label Text="Stabbyness"/>
-            <ProgressBar Progress="0.1"/>
         </VerticalStackLayout>
 
         <!-- Bottom row with 3 equal buttons -->
