@@ -4,13 +4,21 @@
              x:Class="sad2dApp2.MainPage">
 
     <Grid>
-
-        <Image  Source="dotnet_bot.png"
-                WidthRequest="400"
-                HeightRequest="400"
-                Aspect="AspectFit"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"/>
+        <VerticalStackLayout>
+            <Label Text="Pet: Umbreon"/>
+            <Image  Source="umbreon_render.png"
+                    Aspect="AspectFit"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"/>
+            <Label Text="Happiness"/>
+            <ProgressBar Progress="1"/>
+            <Label Text="Sleep"/>
+            <ProgressBar Progress="0.2"/>
+            <Label Text="Readyness"/>
+            <ProgressBar Progress="0.8"/>
+            <Label Text="Stabbyness"/>
+            <ProgressBar Progress="0.1"/>
+        </VerticalStackLayout>
 
         <!-- Bottom row with 3 equal buttons -->
         <Grid Grid.Row="1" ColumnDefinitions="*,*,*"

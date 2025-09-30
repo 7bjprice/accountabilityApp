@@ -1,4 +1,7 @@
-﻿namespace sad2dApp2
+﻿using System;
+using CommunityToolkit.Maui;
+
+namespace sad2dApp2
 {
     public partial class MainPage : ContentPage
     {
