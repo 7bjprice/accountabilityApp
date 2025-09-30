@@ -47,16 +47,15 @@ namespace sad2dApp2
             if (double.TryParse(result, out double newBudget) && newBudget >= 0)
             {
                 _TotalBudget = (int)newBudget;
-                SetBudgetBtn.Text = $"${_TotalBudget}";
-                // Update the UI (if you want to show the new value)
-                // For example, if you have a Label bound to the total budget, update its BindingContext or Text here.
-                // If not, you can find the label by name and set its Text property.
+                TotalBudgetLabel.Text = $"${_TotalBudget}";
             }
             else if (!string.IsNullOrWhiteSpace(result))
             {
                 await DisplayAlert("Invalid Input", "Please enter a valid number for the budget.", "OK");
             }
         }
+    
+            
     }
 
     // Simple model class
