@@ -29,13 +29,23 @@
                     <Label Text="Total Budget"
                        FontSize="18"
                        TextColor="White" />
-                    <Label Text="$2,500"
-                    FontSize="28"
-                    FontAttributes="Bold"
-                    TextColor="White" />
+                    <Label  x:Name="TotalBudgetLabel"
+                            Text="No Budget Set"
+                            FontSize="28"
+                            FontAttributes="Bold"
+                            TextColor="White" />
                 </VerticalStackLayout>
             </Border>
 
+            <!-- Set Overall Budget Button -->
+            <Button x:Name="SetBudgetBtn"
+                    Text="Set Overall Budget"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    CornerRadius="10"
+                    HeightRequest="40"
+                    Clicked="OnSetBudgetClicked"
+                    Margin="0,0,0,10"/>
 
             <!-- Budget Categories -->
             <CollectionView x:Name="BudgetList">
