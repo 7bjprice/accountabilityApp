@@ -16,7 +16,9 @@ namespace sad2dApp2
             InitializeComponent();
 
             // Sample data
-            BudgetItems = new ObservableCollection<BudgetItem> { };
+            BudgetItems = new ObservableCollection<BudgetItem> {
+                new BudgetItem { Category = "Food", Amount = 100 },
+                new BudgetItem { Category = "Rent", Amount = 800 }};
 
             // Bind to CollectionView
             BudgetList.ItemsSource = BudgetItems;
@@ -53,9 +55,16 @@ namespace sad2dApp2
             {
                 await DisplayAlert("Invalid Input", "Please enter a valid number for the budget.", "OK");
             }
+
         }
-    
-            
+        private async void OnMainClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("///MainPage");
+        }
+        private async void OnGoalsClicked(object sender, EventArgs e)
+            {
+                await Shell.Current.GoToAsync("///GoalsPage");
+            }
     }
 
     // Simple model class
@@ -64,4 +73,6 @@ namespace sad2dApp2
         public string ?Category { get; set; }
         public double Amount { get; set; }
     }
-}
+
+  
+    }
