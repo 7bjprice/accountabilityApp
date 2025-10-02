@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace sad2dApp2
 {
-    class AcountaGotchi
+    public class AcountaGotchi
     {
         public string Name { get; set; }
         public float Happiness { get; set; }
         public float Wellness { get; set; }
-        public DateTime StartDate { get; }
+        public DateTime StartDate { get; set; }
         public DateTime LastLogin { get; set; }
 
         float hourlydecay = 0.25f;
@@ -23,6 +23,7 @@ namespace sad2dApp2
             Wellness = 75;
             StartDate = DateTime.Now;
             LastLogin = DateTime.Now;
+            SaveSystem.SaveAcountagotchiToFile(name, this);
         }
 
         public AcountaGotchi(string name, float happiness, float wellness, DateTime startDate, DateTime lastLogin) //Used when loading it from json
