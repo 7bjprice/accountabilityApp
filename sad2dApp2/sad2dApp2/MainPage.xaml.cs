@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using CommunityToolkit.Maui;
 
 namespace sad2dApp2
@@ -12,20 +13,31 @@ namespace sad2dApp2
         {
             InitializeComponent();
 
-            // Load First AcountaGotchi
-            var acountaGotchiNames = SaveSystem.GetAllAcountaGotchiNames();
+            _ = InitializeGotchiAsync();
+        }
+
+        private async Task InitializeGotchiAsync()
+        {
+            var acountaGotchiNames = await SaveSystem.GetAllAcountaGotchiNamesAsync();
+            Debug.WriteLine($"Found {acountaGotchiNames.Count} AcountaGotchi(s).");
+
             if (acountaGotchiNames.Count == 0)
             {
-                // No AcountaGotchi found, create a new one
+                // No AcountaGotchi found, create and save a new one
                 var newAcountaGotchi = new AcountaGotchi("Default");
-                acountaGotchiNames.Add(newAcountaGotchi.Name);
                 CurrentAcountaGotchi = newAcountaGotchi;
+
+                await SaveSystem.SaveAcountagotchiToFileAsync(newAcountaGotchi.Name, newAcountaGotchi);
+                Debug.WriteLine($"Created and saved new AcountaGotchi: {newAcountaGotchi.Name}");
             }
-            else //Load first acountaGotchi
+            else
             {
-                CurrentAcountaGotchi = SaveSystem.LoadAcountagotchi(acountaGotchiNames[0]);
+                // Load the first AcountaGotchi
+                CurrentAcountaGotchi = await SaveSystem.LoadAcountagotchiAsync(acountaGotchiNames[0]);
+                Debug.WriteLine($"Loaded AcountaGotchi: {CurrentAcountaGotchi?.Name}");
             }
         }
+
 
         private async void OnBudgetClicked(object sender, EventArgs e)
         {
