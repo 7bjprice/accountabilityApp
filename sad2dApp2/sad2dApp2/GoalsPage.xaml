@@ -3,97 +3,123 @@
              x:Class="sad2dApp2.GoalsPage"
              Title="Goals">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20">
+    <Grid RowDefinitions="*,Auto">
 
-            <!-- Header -->
-            <Label Text="My Goals"
-                   FontSize="32"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+        <!-- Scrollable main content -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="20">
 
-            <!-- Goals Summary Card -->
-            <Border Stroke="LightGray"
-                StrokeThickness="1"
-                Background="LightGreen"
-                Padding="20"
-                Margin="10"
-                StrokeShape="RoundRectangle 12">
-                <Border.Shadow>
-                    <Shadow Brush="Black"
-                    Offset="5,5"
-                    Radius="10"
-                    Opacity="0.3" />
-                </Border.Shadow>
-                <VerticalStackLayout>
-                    <Label Text="Total Goals"
-                       FontSize="18"
-                       TextColor="White" />
-                    <Label  x:Name="TotalGoalsLabel"
-                            Text="No Goals Set"
-                            FontSize="28"
-                            FontAttributes="Bold"
-                            TextColor="White" />
-                </VerticalStackLayout>
-            </Border>
+                <!-- Header -->
+                <Label Text="My Goals"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" />
 
-            <!-- Set Overall Goals Button -->
-            <Button x:Name="SetGoalsBtn"
-                    Text="Set Overall Goals"
-                    BackgroundColor="#4CAF50"
-                    TextColor="White"
-                    CornerRadius="10"
-                    HeightRequest="40"
-                    Clicked="OnSetGoalsClicked"
-                    Margin="0,0,0,10"/>
-
-            <!-- Goals Categories -->
-            <CollectionView x:Name="GoalsList">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Stroke="#DDDDDD"
-                            StrokeThickness="1"
-                            Background="#F5F5F5"
-                            Padding="15"
-                            Margin="5"
-                            StrokeShape="RoundRectangle 10">
-                            <Border.Shadow>
-                                <Shadow Brush="Black"
-                                Offset="2,2"
-                                Radius="6"
-                                Opacity="0.2" />
-                            </Border.Shadow>
-
-                            <!-- Use Grid for layout -->
-                            <Grid ColumnDefinitions="*,Auto">
-                                <Label Text="{Binding Category}"
-                                   FontSize="18"
-                                   VerticalOptions="Center"
-                                   Grid.Column="0" 
-                                   TextColor="Black"/>
-
-                                <Label Text="{Binding Amount, StringFormat='${0:F2}'}"
+                <!-- Goals Summary Card -->
+                <Border Stroke="LightGray"
+                        StrokeThickness="1"
+                        Background="LightGreen"
+                        Padding="20"
+                        Margin="10"
+                        StrokeShape="RoundRectangle 12">
+                    <Border.Shadow>
+                        <Shadow Brush="Black"
+                                Offset="5,5"
+                                Radius="10"
+                                Opacity="0.3" />
+                    </Border.Shadow>
+                    <VerticalStackLayout>
+                        <Label Text="Total Goals"
                                FontSize="18"
+                               TextColor="White" />
+                        <Label x:Name="TotalGoalsLabel"
+                               Text="No Goals Set"
+                               FontSize="28"
                                FontAttributes="Bold"
-                               VerticalOptions="Center"
-                               HorizontalTextAlignment="End"
-                               Grid.Column="1" 
-                               TextColor="Black"/>
-                                
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                               TextColor="White" />
+                    </VerticalStackLayout>
+                </Border>
 
-            <!-- Add Goals Item Button -->
-            <Button Text="Add Goals Item"
-                    BackgroundColor="#2196F3"
-                    TextColor="White"
-                    CornerRadius="10"
-                    HeightRequest="50"
-                    Clicked="OnAddGoalsItemClicked" />
+                <!-- Set Overall Goals Button -->
+                <Button x:Name="SetGoalsBtn"
+                        Text="Set Overall Goals"
+                        BackgroundColor="#4CAF50"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="40"
+                        Clicked="OnSetGoalsClicked"
+                        Margin="0,0,0,10"/>
 
-        </VerticalStackLayout>
-    </ScrollView>
+                <!-- Goals Categories -->
+                <CollectionView x:Name="GoalsList">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Stroke="#DDDDDD"
+                                    StrokeThickness="1"
+                                    Background="#F5F5F5"
+                                    Padding="15"
+                                    Margin="5"
+                                    StrokeShape="RoundRectangle 10">
+                                <Border.Shadow>
+                                    <Shadow Brush="Black"
+                                            Offset="2,2"
+                                            Radius="6"
+                                            Opacity="0.2" />
+                                </Border.Shadow>
+
+                                <!-- Use Grid for layout -->
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Text="{Binding Category}"
+                                           FontSize="18"
+                                           VerticalOptions="Center"
+                                           Grid.Column="0" 
+                                           TextColor="Black"/>
+
+                                    <Label Text="{Binding Amount, StringFormat='${0:F2}'}"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center"
+                                           HorizontalTextAlignment="End"
+                                           Grid.Column="1" 
+                                           TextColor="Black"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Add Goals Item Button -->
+                <Button Text="Add Goals Item"
+                        BackgroundColor="#2196F3"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Clicked="OnAddGoalsItemClicked" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bottom nav bar -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*"
+              BackgroundColor="#EEEEEE">
+
+            <Button Text="Budgets"
+                    Grid.Column="0"
+                    HeightRequest="80"
+                    FontSize="Header"
+                    Clicked="OnBudgetClicked" />
+
+            <Button Text="Home"
+                    Grid.Column="1"
+                    HeightRequest="80"
+                    FontSize="Header"/>
+
+            <Button Text="Goals"
+                    Grid.Column="2"
+                    HeightRequest="80"
+                    FontSize="Header"
+                    Clicked="OnGoalsClicked" />
+        </Grid>
+
+    </Grid>
 </ContentPage>
