@@ -56,13 +56,21 @@ namespace sad2dApp2
             }
         }
     
-            
+            private async void OnBudgetClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("///BudgetPage");
+        }
+        private async void OnGoalsClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("///GoalsPage");
+        }
     }
+    
 
     // Simple model class
     public class GoalsItem
     {
-        public string ?Category { get; set; }
+        public string? Category { get; set; }
         public double Amount { get; set; }
     }
 }
