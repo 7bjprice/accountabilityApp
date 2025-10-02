@@ -16,9 +16,7 @@ namespace sad2dApp2
             InitializeComponent();
 
             // Sample data
-            BudgetItems = new ObservableCollection<BudgetItem> {
-                new BudgetItem { Category = "Food", Amount = 100 },
-                new BudgetItem { Category = "Rent", Amount = 800 }};
+            BudgetItems = new ObservableCollection<BudgetItem> { };
 
             // Bind to CollectionView
             BudgetList.ItemsSource = BudgetItems;
