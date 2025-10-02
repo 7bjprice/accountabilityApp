@@ -34,7 +34,8 @@
             <Button Text="Goals"
                 Grid.Column="2"
                 HeightRequest="80"
-                FontSize="Header"/>
+                FontSize="Header"
+                Clicked="OnGoalsClicked" />
         </Grid>
 
     </Grid>

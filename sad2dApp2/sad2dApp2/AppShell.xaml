@@ -15,4 +15,9 @@
         Title="Budget"
         ContentTemplate="{DataTemplate local:BudgetPage}"
         Route="BudgetPage" />
+
+        <ShellContent
+        Title="Goals"
+        ContentTemplate="{DataTemplate local:GoalsPage}"
+        Route="GoalsPage" />
 </Shell>

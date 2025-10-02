@@ -15,5 +15,9 @@ namespace sad2dApp2
         {
             await Shell.Current.GoToAsync("///BudgetPage");
         }
+        private async void OnGoalsClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("///GoalsPage");
+        }
     }
 }
