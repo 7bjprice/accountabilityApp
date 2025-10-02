@@ -41,7 +41,7 @@ namespace sad2dApp2
                 await DisplayAlert("Invalid Input", "Please enter a valid number for the amount.", "OK");
             }
         }
-    
+
         private async void OnSetGoalsClicked(object sender, EventArgs e)
         {
             string result = await DisplayPromptAsync("Set Total Goals", "Enter new total goals:", keyboard: Keyboard.Numeric);
@@ -55,14 +55,18 @@ namespace sad2dApp2
                 await DisplayAlert("Invalid Input", "Please enter a valid number for the goals.", "OK");
             }
         }
-    
-            private async void OnBudgetClicked(object sender, EventArgs e)
+
+        private async void OnBudgetClicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("///BudgetPage");
         }
         private async void OnGoalsClicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("///GoalsPage");
+        }
+        private async void OnMainClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("///MainPage");
         }
     }
     

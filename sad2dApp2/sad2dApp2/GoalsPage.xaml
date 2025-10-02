@@ -100,8 +100,7 @@
         </ScrollView>
 
         <!-- Bottom nav bar -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,*,*"
-              BackgroundColor="#EEEEEE">
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*">
 
             <Button Text="Budgets"
                     Grid.Column="0"
@@ -112,7 +111,8 @@
             <Button Text="Home"
                     Grid.Column="1"
                     HeightRequest="80"
-                    FontSize="Header"/>
+                    FontSize="Header"
+                    Clicked="OnMainClicked"/>
 
             <Button Text="Goals"
                     Grid.Column="2"
