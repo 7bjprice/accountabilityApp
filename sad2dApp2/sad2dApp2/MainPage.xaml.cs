@@ -1,13 +1,14 @@
-﻿using System;
+﻿using CommunityToolkit.Maui;
+using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using CommunityToolkit.Maui;
 
 namespace sad2dApp2
 {
     public partial class MainPage : ContentPage
     {
-        // Make property type accessibility match property accessibility
         public AcountaGotchi? CurrentAcountaGotchi { get; set; }
+        public ObservableCollection<TaskItem> Tasks { get; set; } = new();
 
         public MainPage()
         {
@@ -36,7 +37,19 @@ namespace sad2dApp2
                 CurrentAcountaGotchi = await SaveSystem.LoadAcountagotchiAsync(acountaGotchiNames[0]);
                 Debug.WriteLine($"Loaded AcountaGotchi: {CurrentAcountaGotchi?.Name}");
             }
+
+            LoadDailyTasks();
+            TasksList.ItemsSource = Tasks;
         }
+
+        private void LoadDailyTasks()
+        {
+            Tasks.Add(new TaskItem { Title = "Feed Umbreon" });
+            Tasks.Add(new TaskItem { Title = "Give water" });
+            Tasks.Add(new TaskItem { Title = "Take a walk" });
+            Tasks.Add(new TaskItem { Title = "Play together" });
+        }
+
 
 
         private async void OnBudgetClicked(object sender, EventArgs e)

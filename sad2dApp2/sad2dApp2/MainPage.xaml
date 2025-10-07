@@ -1,42 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:sad2dApp2.Converters"
              x:Class="sad2dApp2.MainPage">
 
-    <Grid>
-        <VerticalStackLayout>
-            <Label Text="Pet: Umbreon"/>
-            <Image  Source="umbreon_render.png"
-                    Aspect="AspectFit"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Start"/>
-            <Label Text="Happiness"/>
-            <ProgressBar Progress="1"/>
-            <Label Text="Wellness"/>
-            <ProgressBar Progress="0.2"/>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BoolToTextDecorationConverter x:Key="BoolToTextDecorationConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- 🟢 Top Section: Pet info -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="10" HorizontalOptions="Center">
+                <Label Text="Pet: Umbreon" FontSize="18" FontAttributes="Bold" />
+
+                <Image Source="umbreon_render.png"
+                       Aspect="AspectFit"
+                       HeightRequest="250"
+                       HorizontalOptions="Center" />
+
+                <Label Text="Happiness" FontSize="14" />
+                <ProgressBar Progress="1" HeightRequest="6" ProgressColor="#673AB7"/>
+
+                <Label Text="Wellness" FontSize="14" />
+                <ProgressBar Progress="0.2" HeightRequest="6" ProgressColor="#673AB7"/>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- 🟣 Middle Section: Tasks -->
+        <VerticalStackLayout Grid.Row="1" Padding="20" Spacing="10">
+            <Label Text="Today's Tasks"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <CollectionView x:Name="TasksList" ItemsSource="{Binding Tasks}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="0,5" Padding="10" BackgroundColor="#EEE" CornerRadius="10">
+                            <HorizontalStackLayout Spacing="10">
+                                <CheckBox IsChecked="{Binding IsCompleted}" />
+                                <Label Text="{Binding Title}"
+                                       TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToTextDecorationConverter}}" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
 
-        <!-- Bottom row with 3 equal buttons -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,*,*"
-          VerticalOptions="End">
-
+        <!-- 🔵 Bottom Navigation -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,*,*" VerticalOptions="End">
             <Button Text="Budgets"
-                Grid.Column="0"
-                HeightRequest="80"
-                FontSize="Header"
-                Clicked="OnBudgetClicked" />
+                    Grid.Column="0"
+                    HeightRequest="80"
+                    FontSize="Header"
+                    Clicked="OnBudgetClicked" />
 
             <Button Text="Home"
-                Grid.Column="1"
-                HeightRequest="80"
-                FontSize="Header"/>
+                    Grid.Column="1"
+                    HeightRequest="80"
+                    FontSize="Header"
+                    BackgroundColor="#673AB7"
+                    TextColor="White" />
 
             <Button Text="Goals"
-                Grid.Column="2"
-                HeightRequest="80"
-                FontSize="Header"
-                Clicked="OnGoalsClicked" />
+                    Grid.Column="2"
+                    HeightRequest="80"
+                    FontSize="Header"
+                    Clicked="OnGoalsClicked" />
         </Grid>
-
     </Grid>
 </ContentPage>

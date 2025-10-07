@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
+
 
 namespace sad2dApp2
 {
@@ -26,13 +28,15 @@ namespace sad2dApp2
             SaveSystem.SaveAcountagotchiToFileAsync(name, this);
         }
 
-        public AcountaGotchi(string name, float happiness, float wellness, DateTime startDate, DateTime lastLogin) //Used when loading it from json
+        [JsonConstructor]
+        public AcountaGotchi(string name, float happiness, float wellness, DateTime startDate, DateTime lastLogin)
         {
             Name = name;
             Happiness = happiness;
             Wellness = wellness;
             StartDate = startDate;
             LastLogin = lastLogin;
+
             UpdateStatsAfterLoad();
         }
 
