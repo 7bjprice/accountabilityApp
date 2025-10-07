@@ -23,7 +23,7 @@ namespace sad2dApp2
             Wellness = 75;
             StartDate = DateTime.Now;
             LastLogin = DateTime.Now;
-            SaveSystem.SaveAcountagotchiToFile(name, this);
+            SaveSystem.SaveAcountagotchiToFileAsync(name, this);
         }
 
         public AcountaGotchi(string name, float happiness, float wellness, DateTime startDate, DateTime lastLogin) //Used when loading it from json
