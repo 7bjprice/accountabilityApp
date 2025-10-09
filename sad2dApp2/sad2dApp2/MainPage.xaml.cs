@@ -7,7 +7,6 @@ namespace sad2dApp2
 {
     public partial class MainPage : ContentPage
     {
-        public AcountaGotchi? CurrentAcountaGotchi { get; set; }
         public ObservableCollection<TaskItem> Tasks { get; set; } = new();
 
         public MainPage()
@@ -15,12 +14,6 @@ namespace sad2dApp2
             InitializeComponent();
 
             _ = InitializeGotchiAsync();
-        }
-
-        private void UpdateBars()
-        {
-            HappinessBar.Progress = CurrentAcountaGotchi.Happiness / 100f;
-            WellnessBar.Progress = CurrentAcountaGotchi.Wellness / 100f;
         }
 
         private async Task InitializeGotchiAsync()
@@ -32,7 +25,7 @@ namespace sad2dApp2
             {
                 // No AcountaGotchi found, create and save a new one
                 var newAcountaGotchi = new AcountaGotchi("Default");
-                CurrentAcountaGotchi = newAcountaGotchi;
+                GotchiService.Current = newAcountaGotchi;
 
                 await SaveSystem.SaveAcountagotchiToFileAsync(newAcountaGotchi.Name, newAcountaGotchi);
                 Debug.WriteLine($"Created and saved new AcountaGotchi: {newAcountaGotchi.Name}");
@@ -40,13 +33,25 @@ namespace sad2dApp2
             else
             {
                 // Load the first AcountaGotchi
-                CurrentAcountaGotchi = await SaveSystem.LoadAcountagotchiAsync(acountaGotchiNames[0]);
+                var CurrentAcountaGotchi = await SaveSystem.LoadAcountagotchiAsync(acountaGotchiNames[0]);
+                GotchiService.Current = CurrentAcountaGotchi;
                 Debug.WriteLine($"Loaded AcountaGotchi: {CurrentAcountaGotchi?.Name}");
             }
 
             LoadDailyTasks();
             UpdateBars();
             TasksList.ItemsSource = Tasks;
+        }
+
+        private void UpdateBars()
+        {
+            if(GotchiService.Current == null)
+            {
+                Debug.WriteLine("GotchiService.Current is null, cannot update bars.");
+                return;
+            }
+            HappinessBar.Progress = GotchiService.Current.Happiness / 100f;
+            WellnessBar.Progress = GotchiService.Current.Wellness / 100f;
         }
 
         private void LoadDailyTasks()

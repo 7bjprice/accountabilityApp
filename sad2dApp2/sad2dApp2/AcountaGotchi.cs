@@ -60,4 +60,9 @@ namespace sad2dApp2
             Happiness = Math.Max(0, Happiness - amount);
         }
     }
+
+    public static class GotchiService
+    {
+        public static AcountaGotchi? Current { get; set; }
+    }
 }
