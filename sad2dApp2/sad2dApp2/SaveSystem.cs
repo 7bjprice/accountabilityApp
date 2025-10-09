@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Text.Json;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using static Java.Util.Jar.Attributes;
 
 namespace sad2dApp2
 {
@@ -20,7 +22,7 @@ namespace sad2dApp2
                 string json = JsonSerializer.Serialize(acountaGotchi);
                 string filePath = Path.Combine(folderPath, $"{name}_acountagotchi.json");
 
-                await File.WriteAllTextAsync(filePath, json); // await here
+                await File.WriteAllTextAsync(filePath, json);
 
                 Debug.WriteLine($"Saved AcountaGotchi to: {filePath}");
                 return true;
@@ -73,5 +75,70 @@ namespace sad2dApp2
                 return null;
             }
         }
+
+        public static async Task<bool> SaveBudgetItems(ObservableCollection<BudgetItem> items, double totalBudget)
+        {
+            try
+            {
+                string folderPath = Path.Combine(FileSystem.AppDataDirectory, "budget");
+                Directory.CreateDirectory(folderPath); // Ensure the directory exists
+
+                string json = JsonSerializer.Serialize(
+                    new { TotalBudget = totalBudget, Items = items },
+                    new JsonSerializerOptions { WriteIndented = true }
+                );
+                string filePath = Path.Combine(folderPath, $"budget.json");
+
+                await File.WriteAllTextAsync(filePath, json);
+                Debug.WriteLine($"Saved budget items to: {filePath}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error saving budget items: {ex.Message}");
+                return false;
+            }
+        }
+
+        public static async Task<(ObservableCollection<BudgetItem>, double)> LoadBudgetItems()
+        {
+            try
+            {
+                string folderPath = Path.Combine(FileSystem.AppDataDirectory, "budget");
+                string filePath = Path.Combine(folderPath, "budget.json");
+
+                if (!File.Exists(filePath))
+                {
+                    Debug.WriteLine("Budget file not found, returning empty collection.");
+                    return (new ObservableCollection<BudgetItem>(), 0);
+                }
+
+                string json = await File.ReadAllTextAsync(filePath);
+
+                // Define a helper type to match the saved JSON structure
+                var data = JsonSerializer.Deserialize<BudgetData>(json);
+
+                var items = data?.Items != null
+                    ? new ObservableCollection<BudgetItem>(data.Items)
+                    : new ObservableCollection<BudgetItem>();
+
+                double totalBudget = data?.TotalBudget ?? 0;
+
+                Debug.WriteLine($"Loaded {items.Count} budget items with total budget {totalBudget}");
+                return (items, totalBudget);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading budget items: {ex.Message}");
+                return (new ObservableCollection<BudgetItem>(), 0);
+            }
+        }
+
+    }
+
+    class BudgetData
+    {
+        public double TotalBudget { get; set; }
+        public List<BudgetItem> Items { get; set; }
     }
 }
