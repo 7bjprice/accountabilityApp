@@ -40,7 +40,7 @@ namespace sad2dApp2
 
         private async void OnAddExpenseClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton; // <-- fix: correct type
+            var button = sender as ImageButton;
             var item = button?.BindingContext as BudgetItem;
             if (item == null) return;
 
@@ -50,13 +50,13 @@ namespace sad2dApp2
             {
                 item.Spent += expense;
 
-                // Optional: auto-update computed fields
                 item.Remaining = item.Amount - item.Spent;
                 item.Progress = Math.Min(item.Spent / item.Amount, 1);
 
                 // Refresh UI
                 BudgetList.ItemsSource = null;
                 BudgetList.ItemsSource = BudgetItems;
+                UpdateTotals();
             }
             else if (!string.IsNullOrWhiteSpace(expenseStr))
             {
