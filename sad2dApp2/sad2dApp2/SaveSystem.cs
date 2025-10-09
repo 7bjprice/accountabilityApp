@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using static Java.Util.Jar.Attributes;
 
 namespace sad2dApp2
 {

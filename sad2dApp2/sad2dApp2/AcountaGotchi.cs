@@ -11,17 +11,17 @@ namespace sad2dApp2
     public class AcountaGotchi
     {
         public string Name { get; set; }
-        public float Happiness { get; set; }
-        public float Wellness { get; set; }
+        public float Happiness { get; set; } // Finacial
+        public float Wellness { get; set; } // Goals
         public DateTime StartDate { get; set; }
         public DateTime LastLogin { get; set; }
 
-        float hourlydecay = 0.25f;
+        float hourlydecay = 6/24f; // 6 points per day
 
         public AcountaGotchi(string name) //This function is used when creating a tomagotchi for the first time
         {
             Name = name;
-            Happiness = 75;
+            Happiness = 100;
             Wellness = 75;
             StartDate = DateTime.Now;
             LastLogin = DateTime.Now;
@@ -44,7 +44,6 @@ namespace sad2dApp2
         {
             int hoursSinceLastLogin = (int)(DateTime.Now - LastLogin).TotalHours;
             float decayAmount = hoursSinceLastLogin * hourlydecay;
-            Happiness = Math.Max(0, Happiness - decayAmount);
             Wellness = Math.Max(0, Wellness - decayAmount);
 
             LastLogin = DateTime.Now;
