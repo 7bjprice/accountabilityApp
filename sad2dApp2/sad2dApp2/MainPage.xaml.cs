@@ -17,6 +17,12 @@ namespace sad2dApp2
             _ = InitializeGotchiAsync();
         }
 
+        private void UpdateBars()
+        {
+            HappinessBar.Progress = CurrentAcountaGotchi.Happiness / 100f;
+            WellnessBar.Progress = CurrentAcountaGotchi.Wellness / 100f;
+        }
+
         private async Task InitializeGotchiAsync()
         {
             var acountaGotchiNames = await SaveSystem.GetAllAcountaGotchiNamesAsync();
@@ -39,15 +45,14 @@ namespace sad2dApp2
             }
 
             LoadDailyTasks();
+            UpdateBars();
             TasksList.ItemsSource = Tasks;
         }
 
         private void LoadDailyTasks()
         {
-            Tasks.Add(new TaskItem { Title = "Feed Umbreon" });
-            Tasks.Add(new TaskItem { Title = "Give water" });
-            Tasks.Add(new TaskItem { Title = "Take a walk" });
-            Tasks.Add(new TaskItem { Title = "Play together" });
+            Tasks.Add(new TaskItem { Title = "Update Budget" });
+            Tasks.Add(new TaskItem { Title = "Update Goals" });
         }
 
 
