@@ -48,5 +48,16 @@ namespace sad2dApp2
 
             LastLogin = DateTime.Now;
         }
+
+        public void ResetStats()
+        {
+            Happiness = 100;
+            Wellness = 75;
+        }
+
+        public void SubtractHappiness(float amount)
+        {
+            Happiness = Math.Max(0, Happiness - amount);
+        }
     }
 }
