@@ -22,10 +22,11 @@
                        HorizontalOptions="Center" />
 
                 <Label Text="Happiness" FontSize="14" />
-                <ProgressBar Progress="1" HeightRequest="6" ProgressColor="#673AB7"/>
+                <ProgressBar x:Name="HappinessBar" HeightRequest="6" ProgressColor="#673AB7"/>
 
                 <Label Text="Wellness" FontSize="14" />
-                <ProgressBar Progress="0.2" HeightRequest="6" ProgressColor="#673AB7"/>
+                <ProgressBar x:Name="WellnessBar" HeightRequest="6" ProgressColor="#673AB7"/>
+
             </VerticalStackLayout>
         </ScrollView>
 
