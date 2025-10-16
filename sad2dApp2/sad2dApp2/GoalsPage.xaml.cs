@@ -7,41 +7,39 @@ namespace sad2dApp2
 {
     public partial class GoalsPage : ContentPage
     {
-        // Fields and properties
         private readonly string[] _quotes = new string[]
         {
-            "Believe you can and you're halfway there. — Theodore Roosevelt",
-            "The future depends on what you do today. — Mahatma Gandhi",
-            "Don’t watch the clock; do what it does. Keep going. — Sam Levenson",
-            "Success is the sum of small efforts repeated day in and day out. — Robert Collier",
-            "Dream big and dare to fail. — Norman Vaughan"
+            "Setting goals is a worthy endeavor. — Dieter F. Uchtdorf",
+            "Our personal goals can bring out the best in us. — Dieter F. Uchtdorf",
+            "Greatness is not always a matter of the scale of one’s life, but of the quality of one’s life — Spencer W. Kimball",
+            "Create a masterpiece of your life. — Joseph B. Wirthlin",
+            "Ironically, procrastination produces a heavy burden laced with guilt. — Donald L. Hallstrom"
         };
 
         private int _currentQuoteIndex = 0;
         private System.Timers.Timer _quoteTimer;
 
-
-        // Existing fields
-        public ObservableCollection<GoalsItem> GoalsItems { get; set; }
-        public int _TotalGoals;
+        // Three separate collections
+        public ObservableCollection<GoalsItem> DailyGoals { get; set; } = new();
+        public ObservableCollection<GoalsItem> WeeklyGoals { get; set; } = new();
+        public ObservableCollection<GoalsItem> MonthlyGoals { get; set; } = new();
 
         public GoalsPage()
         {
             InitializeComponent();
-
-            GoalsItems = new ObservableCollection<GoalsItem>();
-            GoalsList.ItemsSource = GoalsItems;
+            DailyGoalsList.ItemsSource = DailyGoals;
+            WeeklyGoalsList.ItemsSource = WeeklyGoals;
+            MonthlyGoalsList.ItemsSource = MonthlyGoals;
 
             StartQuoteRotation();
         }
 
-        // ✅ Quote rotation logic
+        // Quote rotation logic
         private void StartQuoteRotation()
         {
             QuoteLabel.Text = _quotes[_currentQuoteIndex];
-
             _quoteTimer = new System.Timers.Timer(7000);
-            _quoteTimer.Elapsed += (sender, e) => RotateQuote();
+            _quoteTimer.Elapsed += (s, e) => RotateQuote();
             _quoteTimer.AutoReset = true;
             _quoteTimer.Start();
         }
@@ -49,8 +47,6 @@ namespace sad2dApp2
         private void RotateQuote()
         {
             _currentQuoteIndex = (_currentQuoteIndex + 1) % _quotes.Length;
-
-            // Use Dispatcher for UI thread updates
             Dispatcher.Dispatch(() =>
             {
                 QuoteLabel.FadeTo(0, 250);
@@ -70,63 +66,55 @@ namespace sad2dApp2
             base.OnAppearing();
             _quoteTimer?.Start();
         }
+
+        // Updated Add Goal logic
         private async void OnAddGoalsItemClicked(object sender, EventArgs e)
         {
-            // Prompt for category
-            string category = await DisplayPromptAsync("New Goals Item", "Enter category:");
-            if (string.IsNullOrWhiteSpace(category))
-                return;
+            string goalText = await DisplayPromptAsync("New Goal", "Enter your goal:");
+            if (string.IsNullOrWhiteSpace(goalText)) return;
 
-            // Prompt for amount
-            string amountStr = await DisplayPromptAsync("New Goals Item", "Enter amount:", keyboard: Keyboard.Numeric);
-            if (double.TryParse(amountStr, out double amount))
-            {
-                GoalsItems.Add(new GoalsItem { Category = category, Amount = amount });
+            string[] options = { "Daily", "Weekly", "Monthly" };
+            string goalType = await DisplayActionSheet("Select Goal Type", "Cancel", null, options);
 
-            }
-            else
+            if (goalType == "Cancel" || string.IsNullOrWhiteSpace(goalType)) return;
+
+            GoalsItem newGoal = new GoalsItem { Category = goalText };
+
+            switch (goalType)
             {
-                await DisplayAlert("Invalid Input", "Please enter a valid number for the amount.", "OK");
+                case "Daily":
+                    DailyGoals.Add(newGoal);
+                    break;
+                case "Weekly":
+                    WeeklyGoals.Add(newGoal);
+                    break;
+                case "Monthly":
+                    MonthlyGoals.Add(newGoal);
+                    break;
             }
         }
 
         private async void OnSetGoalsClicked(object sender, EventArgs e)
         {
-            string result = await DisplayPromptAsync("Set Goal", "Enter your why:", keyboard: Keyboard.Default);
-
+            string result = await DisplayPromptAsync("Set Goal", "Enter your why:");
             if (!string.IsNullOrWhiteSpace(result))
-            {
-                // Save the text goal
                 TotalGoalsLabel.Text = $"Your Why: {result}";
-            }
             else
-            {
                 await DisplayAlert("Invalid Input", "Please enter a valid why.", "OK");
-            }
         }
 
-
-        private async void OnBudgetClicked(object sender, EventArgs e)
-        {
+        private async void OnBudgetClicked(object sender, EventArgs e) =>
             await Shell.Current.GoToAsync("///BudgetPage");
-        }
-        private async void OnGoalsClicked(object sender, EventArgs e)
-        {
+
+        private async void OnGoalsClicked(object sender, EventArgs e) =>
             await Shell.Current.GoToAsync("///GoalsPage");
-        }
-        private async void OnMainClicked(object sender, EventArgs e)
-        {
+
+        private async void OnMainClicked(object sender, EventArgs e) =>
             await Shell.Current.GoToAsync("///MainPage");
-        }
     }
 
-
-    // Simple model class
     public class GoalsItem
     {
         public string? Category { get; set; }
-        public double Amount { get; set; }
     }
-    
-    
 }
