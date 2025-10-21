@@ -43,7 +43,7 @@ namespace sad2dApp2
             TasksList.ItemsSource = Tasks;
         }
 
-        private void UpdateBars()
+        public void UpdateBars()
         {
             if(GotchiService.Current == null)
             {
