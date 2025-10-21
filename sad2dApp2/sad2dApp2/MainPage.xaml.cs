@@ -14,6 +14,7 @@ namespace sad2dApp2
             InitializeComponent();
 
             _ = InitializeGotchiAsync();
+            GotchiService.OnGotchiUpdated += UpdateBars;
         }
 
         private async Task InitializeGotchiAsync()
