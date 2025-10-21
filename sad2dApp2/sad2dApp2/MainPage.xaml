@@ -13,19 +13,33 @@
     <Grid RowDefinitions="Auto,*,Auto">
         <!-- 🟢 Top Section: Pet info -->
         <ScrollView Grid.Row="0">
-            <VerticalStackLayout Padding="20" Spacing="10" HorizontalOptions="Center">
-                <Label Text="Pet: Umbreon" FontSize="18" FontAttributes="Bold" />
+            <VerticalStackLayout Padding="20" 
+                                 Spacing="10" 
+                                 HorizontalOptions="Center">
+                
+                <Label Text="Pet: Umbreon" 
+                       FontSize="18" 
+                       FontAttributes="Bold" />
 
                 <Image Source="umbreon_render.png"
                        Aspect="AspectFit"
                        HeightRequest="250"
                        HorizontalOptions="Center" />
 
-                <Label Text="Happiness" FontSize="14" />
-                <ProgressBar x:Name="HappinessBar" HeightRequest="6" ProgressColor="#673AB7"/>
+                <Label Text="Happiness" 
+                       FontSize="14" />
+     
+                <ProgressBar x:Name="HappinessBar" 
+                             Progress="{Binding Happiness}"
+                             HeightRequest="6"
+                             ProgressColor="#673AB7"/>
 
-                <Label Text="Wellness" FontSize="14" />
-                <ProgressBar x:Name="WellnessBar" HeightRequest="6" ProgressColor="#673AB7"/>
+                <Label Text="Wellness" 
+                       FontSize="14" />
+                
+                <ProgressBar x:Name="WellnessBar" 
+                             HeightRequest="6" 
+                             ProgressColor="#673AB7"/>
 
             </VerticalStackLayout>
         </ScrollView>
