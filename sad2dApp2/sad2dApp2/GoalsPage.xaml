@@ -1,7 +1,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="sad2dApp2.GoalsPage"
-             Title="Goals">
+             Title="Goals"
+             BackgroundColor="#F9FAFB">
 
     <Grid RowDefinitions="*,Auto">
         <ScrollView Grid.Row="0">
@@ -109,11 +110,25 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Bottom Nav Bar -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,*,*">
-            <Button Text="Budgets" Grid.Column="0" HeightRequest="80" FontSize="Header" Clicked="OnBudgetClicked" />
-            <Button Text="Home" Grid.Column="1" HeightRequest="80" FontSize="Header" Clicked="OnMainClicked"/>
-            <Button Text="Goals" Grid.Column="2" HeightRequest="80" FontSize="Header" Clicked="OnGoalsClicked" />
+        <!-- Bottom nav -->
+        <Grid Grid.Row="2"
+              ColumnDefinitions="*,*,*"
+              HeightRequest="72"
+              BackgroundColor="#F1F1F1"
+              Padding="8,10">
+            <Button Text="Budgets" Grid.Column="0" 
+                    BackgroundColor="Transparent" 
+                    TextColor="#333" 
+                    Clicked="OnBudgetClicked"/>
+            <Button Text="Home" 
+                    Grid.Column="1" 
+                    BackgroundColor="Transparent" 
+                    TextColor="#333" 
+                    Clicked="OnMainClicked" />
+            <Button Text="Goals" 
+                    Grid.Column="2" 
+                    BackgroundColor="Transparent" 
+                    TextColor="#4CAF50" />
         </Grid>
     </Grid>
 </ContentPage>
