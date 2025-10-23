@@ -21,10 +21,12 @@
                        FontSize="18" 
                        FontAttributes="Bold" />
 
-                <Image Source="umbreon_render.png"
-                       Aspect="AspectFit"
-                       HeightRequest="250"
-                       HorizontalOptions="Center" />
+                <WebView x:Name="myWebView"
+                         HeightRequest="250"
+                         WidthRequest="250"
+                         HorizontalOptions="Center"
+                         Source="umbreon_render.html" />
+
 
                 <Label Text="Happiness" 
                        FontSize="14" />
