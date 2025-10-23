@@ -20,17 +20,33 @@ namespace sad2dApp2
 
         private async void LoadLocalHtml()
         {
-            // Open the local HTML file from Resources/Raw
-            using var stream = await FileSystem.OpenAppPackageFileAsync("index.html");
-            using var reader = new StreamReader(stream);
-            string htmlContent = await reader.ReadToEndAsync();
+            Debug.WriteLine("LoadLocalHtml started.");
 
-            // Set the WebView’s source to the HTML content
-            myWebView.Source = new HtmlWebViewSource
+            try
             {
-                Html = htmlContent
-            };
+                Debug.WriteLine("Opening local HTML file: index.html");
+                using var stream = await FileSystem.OpenAppPackageFileAsync("index.html");
+                Debug.WriteLine("File stream opened successfully.");
+
+                using var reader = new StreamReader(stream);
+                string htmlContent = await reader.ReadToEndAsync();
+                Debug.WriteLine("HTML content read successfully. Length: " + htmlContent.Length);
+
+                Debug.WriteLine("Setting WebView source.");
+                myWebView.Source = new HtmlWebViewSource
+                {
+                    Html = htmlContent
+                };
+                Debug.WriteLine("WebView source set successfully.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception in LoadLocalHtml: " + ex);
+            }
+
+            Debug.WriteLine("LoadLocalHtml finished.");
         }
+
 
         private async Task InitializeGotchiAsync()
         {
@@ -58,6 +74,7 @@ namespace sad2dApp2
             UpdateBars();
             TasksList.ItemsSource = Tasks;
         }
+
 
         public void UpdateBars()
         {

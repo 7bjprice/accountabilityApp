@@ -26,8 +26,8 @@
                 <WebView x:Name="myWebView"
                          HeightRequest="250"
                          WidthRequest="250"
-                         HorizontalOptions="Center"
-                         Source="umbreon_render.html" />
+                         HorizontalOptions="Center"/>
+
 
 
                 <Label Text="Happiness" 
