@@ -32,6 +32,7 @@ namespace sad2dApp2
             MonthlyGoalsList.ItemsSource = MonthlyGoals;
 
             StartQuoteRotation();
+            
         }
 
         // Quote rotation logic
@@ -59,12 +60,49 @@ namespace sad2dApp2
         {
             base.OnDisappearing();
             _quoteTimer?.Stop();
+
+            SaveGoalsItems();
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
-            base.OnAppearing();
             _quoteTimer?.Start();
+
+            // Load goals from JSON
+            var (items, totalGoals) = await SaveSystem.LoadGoalsItems();
+
+            // Clear current collections
+            DailyGoals.Clear();
+            WeeklyGoals.Clear();
+            MonthlyGoals.Clear();
+
+            // Distribute loaded items into the right collections
+            foreach (var item in items)
+            {
+                switch (item.Target)
+                {
+                    case 1:
+                        DailyGoals.Add(item);
+                        break;
+                    case 7:
+                        WeeklyGoals.Add(item);
+                        break;
+                    case 30:
+                        MonthlyGoals.Add(item);
+                        break;
+                    default:
+                        DailyGoals.Add(item); // fallback
+                        break;
+                }
+            }
+        }
+        private async void SaveGoalsItems()
+        {
+            // Combine all collections into a single list
+            var allGoals = DailyGoals.Concat(WeeklyGoals).Concat(MonthlyGoals).ToList();
+            double totalGoals = allGoals.Count;
+
+            await SaveSystem.SaveGoalsItems(new ObservableCollection<GoalsItem>(allGoals), totalGoals);
         }
 
         // Updated Add Goal logic
@@ -97,6 +135,37 @@ namespace sad2dApp2
             }
         }
 
+        private async void OnRenameGoalClicked(object sender, EventArgs e)
+        {
+            if (sender is ImageButton button && button.BindingContext is GoalsItem goal)
+            {
+                string newText = await DisplayPromptAsync("Rename Goal", "Enter new goal text:", initialValue: goal.Category);
+                if (!string.IsNullOrWhiteSpace(newText))
+                {
+                    goal.Category = newText;
+                    RefreshGoalsLists();
+                    SaveGoalsItems();
+                }
+            }
+        }
+
+        private async void OnDeleteGoalClicked(object sender, EventArgs e)
+        {
+            if (sender is ImageButton button && button.BindingContext is GoalsItem goal)
+            {
+                bool confirm = await DisplayAlert("Delete Goal", $"Delete '{goal.Category}'?", "Yes", "No");
+                if (confirm)
+                {
+                    if (DailyGoals.Contains(goal)) DailyGoals.Remove(goal);
+                    else if (WeeklyGoals.Contains(goal)) WeeklyGoals.Remove(goal);
+                    else if (MonthlyGoals.Contains(goal)) MonthlyGoals.Remove(goal);
+
+                    RefreshGoalsLists();
+                    SaveGoalsItems();
+                }
+            }
+        }
+
         private async void OnSetGoalsClicked(object sender, EventArgs e)
         {
             string result = await DisplayPromptAsync("Set Goal", "Enter your why:");
@@ -105,6 +174,17 @@ namespace sad2dApp2
             else
                 await DisplayAlert("Invalid Input", "Please enter a valid why.", "OK");
         }
+        private void RefreshGoalsLists()
+        {
+            DailyGoalsList.ItemsSource = null;
+            DailyGoalsList.ItemsSource = DailyGoals;
+
+            WeeklyGoalsList.ItemsSource = null;
+            WeeklyGoalsList.ItemsSource = WeeklyGoals;
+
+            MonthlyGoalsList.ItemsSource = null;
+            MonthlyGoalsList.ItemsSource = MonthlyGoals;
+        }   
 
         private async void OnBudgetClicked(object sender, EventArgs e) =>
             await Shell.Current.GoToAsync("///BudgetPage");
@@ -120,7 +200,6 @@ namespace sad2dApp2
             {
                 goal.Increment();
 
-                // Refresh UI
                 DailyGoalsList.ItemsSource = null;
                 DailyGoalsList.ItemsSource = DailyGoals;
                 WeeklyGoalsList.ItemsSource = null;
@@ -132,12 +211,13 @@ namespace sad2dApp2
     }
     
 }
-    public class GoalsItem
+public class GoalsItem
 {
     public string? Category { get; set; }
     public int Current { get; set; } = 0;
-    public int Target { get; set; } = 1; // default to daily
+    public int Target { get; set; } = 1;
 
+    public double ProgressValue => (double)Current / Math.Max(Target, 1);
     public string Progress => $"{Current}/{Target}";
 
     public void Increment()
@@ -146,18 +226,4 @@ namespace sad2dApp2
             Current++;
     }
 
-    
 }
-
-
-//     private void UpdateTotals()
-//         {
-//             double totalSpent = 0;
-//             foreach (var item in GoalsItems)
-//                 totalSpent += item.Spent;
-
-//             double remaining = _totalGoals - totalSpent;
-//             TotalSpentLabel.Text = $"Spent: ${totalSpent:F2}";
-//             RemainingLabel.Text = $"Remaining: ${remaining:F2}";
-//         }
-// }

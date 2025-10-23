@@ -37,23 +37,36 @@
                 <!-- Daily Goals -->
                 <Label Text="Daily Goals" FontSize="22" FontAttributes="Bold" TextColor="DarkGreen" />
                 <CollectionView x:Name="DailyGoalsList">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame BackgroundColor="#E8F5E9" CornerRadius="10" Padding="10" Margin="5">
-                                <Grid VerticalOptions="Center" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="#E8F5E9" CornerRadius="10" Padding="10" Margin="5">
+                                    <VerticalStackLayout Spacing="6">
+                                        <!-- Goal text and numeric progress -->
+                                        <Grid ColumnDefinitions="*,Auto,Auto" VerticalOptions="Center">
+                                            <Label Text="{Binding Category}" FontSize="18" TextColor="Black" Grid.Column="0"/>
+                                            <Label Text="{Binding ProgressText}" FontSize="16" TextColor="Black" Grid.Column="1" HorizontalTextAlignment="End"/>
+                                        <!-- Edit/Delete buttons -->
+                                        
+                                        <HorizontalStackLayout Spacing="8" HorizontalOptions="End">
+
+                                    
                                    
-                                    <Label Text="{Binding Category}" FontSize="18" TextColor="Black" VerticalOptions="Center" Grid.Column="0"/>
-                                    
-                                    
-                                    <Label Text="{Binding Progress}" FontSize="16" TextColor="Black" VerticalOptions="Center" Grid.Column="1"/>
-                                    
-                                    
-                                    <Button Text="✓" Clicked="OnGoalCompleteClicked" WidthRequest="40" HeightRequest="40" Grid.Column="2"/>
-                                </Grid>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                                        <Label Text="{Binding Progress}" FontSize="16" TextColor="Black" VerticalOptions="Center" Grid.Column="1"/>
+                                            <Button Text="✓" Clicked="OnGoalCompleteClicked" WidthRequest="40" HeightRequest="40" Grid.Column="2"/>
+                                            <ImageButton Source="edit_icon.png" CommandParameter="{Binding .}" Clicked="OnRenameGoalClicked" WidthRequest="26" HeightRequest="26" BackgroundColor="Transparent"/>
+                                            <ImageButton Source="trash_icon.png" CommandParameter="{Binding .}" Clicked="OnDeleteGoalClicked" WidthRequest="26" HeightRequest="26" BackgroundColor="Transparent"/>
+                                        </HorizontalStackLayout>
+                                        
+                                        </Grid>
+                                        <!-- Progress bar -->
+                                        <ProgressBar Progress="{Binding ProgressValue}" HeightRequest="6" BackgroundColor="#E0E0E0" ProgressColor="#4CAF50"/>
+
+                                        
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
 
                 <!-- Weekly Goals -->
@@ -62,17 +75,30 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame BackgroundColor="#E8F5E9" CornerRadius="10" Padding="10" Margin="5">
-                                <Grid VerticalOptions="Center" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                    <VerticalStackLayout Spacing="6">
+                                        <!-- Goal text and numeric progress -->
+                                        <Grid ColumnDefinitions="*,Auto,Auto" VerticalOptions="Center">
+                                            <Label Text="{Binding Category}" FontSize="18" TextColor="Black" Grid.Column="0"/>
+                                            <Label Text="{Binding ProgressText}" FontSize="16" TextColor="Black" Grid.Column="1" HorizontalTextAlignment="End"/>
+                                        <!-- Edit/Delete buttons -->
+                                        
+                                        <HorizontalStackLayout Spacing="8" HorizontalOptions="End">
+
                                     
-                                    <Label Text="{Binding Category}" FontSize="18" TextColor="Black" VerticalOptions="Center" Grid.Column="0"/>
-                                    
-                                    
-                                    <Label Text="{Binding Progress}" FontSize="16" TextColor="Black" VerticalOptions="Center" Grid.Column="1"/>
-                                    
-                                    
-                                    <Button Text="✓" Clicked="OnGoalCompleteClicked" WidthRequest="40" HeightRequest="40" Grid.Column="2"/>
-                                </Grid>
-                            </Frame>
+                                   
+                                        <Label Text="{Binding Progress}" FontSize="16" TextColor="Black" VerticalOptions="Center" Grid.Column="1"/>
+                                            <Button Text="✓" Clicked="OnGoalCompleteClicked" WidthRequest="40" HeightRequest="40" Grid.Column="2"/>
+                                            <ImageButton Source="edit_icon.png" CommandParameter="{Binding .}" Clicked="OnRenameGoalClicked" WidthRequest="26" HeightRequest="26" BackgroundColor="Transparent"/>
+                                            <ImageButton Source="trash_icon.png" CommandParameter="{Binding .}" Clicked="OnDeleteGoalClicked" WidthRequest="26" HeightRequest="26" BackgroundColor="Transparent"/>
+                                        </HorizontalStackLayout>
+                                        
+                                        </Grid>
+                                        <!-- Progress bar -->
+                                        <ProgressBar Progress="{Binding ProgressValue}" HeightRequest="6" BackgroundColor="#E0E0E0" ProgressColor="#4CAF50"/>
+
+                                        
+                                    </VerticalStackLayout>
+                                </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
@@ -84,17 +110,30 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame BackgroundColor="#E8F5E9" CornerRadius="10" Padding="10" Margin="5">
-                                <Grid VerticalOptions="Center" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
-                                   
-                                    <Label Text="{Binding Category}" FontSize="18" TextColor="Black" VerticalOptions="Center" Grid.Column="0"/>
+                                    <VerticalStackLayout Spacing="6">
+                                        <!-- Goal text and numeric progress -->
+                                        <Grid ColumnDefinitions="*,Auto,Auto" VerticalOptions="Center">
+                                            <Label Text="{Binding Category}" FontSize="18" TextColor="Black" Grid.Column="0"/>
+                                            <Label Text="{Binding ProgressText}" FontSize="16" TextColor="Black" Grid.Column="1" HorizontalTextAlignment="End"/>
+                                        <!-- Edit/Delete buttons -->
+                                        
+                                        <HorizontalStackLayout Spacing="8" HorizontalOptions="End">
+
                                     
                                    
-                                    <Label Text="{Binding Progress}" FontSize="16" TextColor="Black" VerticalOptions="Center" Grid.Column="1"/>
-                                    
-                                
-                                    <Button Text="✓" Clicked="OnGoalCompleteClicked" WidthRequest="40" HeightRequest="40" Grid.Column="2"/>
-                                </Grid>
-                            </Frame>
+                                        <Label Text="{Binding Progress}" FontSize="16" TextColor="Black" VerticalOptions="Center" Grid.Column="1"/>
+                                            <Button Text="✓" Clicked="OnGoalCompleteClicked" WidthRequest="40" HeightRequest="40" Grid.Column="2"/>
+                                            <ImageButton Source="edit_icon.png" CommandParameter="{Binding .}" Clicked="OnRenameGoalClicked" WidthRequest="26" HeightRequest="26" BackgroundColor="Transparent"/>
+                                            <ImageButton Source="trash_icon.png" CommandParameter="{Binding .}" Clicked="OnDeleteGoalClicked" WidthRequest="26" HeightRequest="26" BackgroundColor="Transparent"/>
+                                        </HorizontalStackLayout>
+                                        
+                                        </Grid>
+                                        <!-- Progress bar -->
+                                        <ProgressBar Progress="{Binding ProgressValue}" HeightRequest="6" BackgroundColor="#E0E0E0" ProgressColor="#4CAF50"/>
+
+                                        
+                                    </VerticalStackLayout>
+                                </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
