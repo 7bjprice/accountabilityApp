@@ -3,7 +3,8 @@
              xmlns:local="clr-namespace:sad2dApp2"
              x:Class="sad2dApp2.BudgetPage"
              Title="Budget"
-             BackgroundColor="#F9FAFB">
+             BackgroundColor="#F9FAFB"
+             >
 
     <ContentPage.Resources>
         <ResourceDictionary>

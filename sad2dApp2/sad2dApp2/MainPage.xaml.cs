@@ -15,6 +15,21 @@ namespace sad2dApp2
 
             _ = InitializeGotchiAsync();
             GotchiService.OnGotchiUpdated += UpdateBars;
+            LoadLocalHtml();
+        }
+
+        private async void LoadLocalHtml()
+        {
+            // Open the local HTML file from Resources/Raw
+            using var stream = await FileSystem.OpenAppPackageFileAsync("index.html");
+            using var reader = new StreamReader(stream);
+            string htmlContent = await reader.ReadToEndAsync();
+
+            // Set the WebView’s source to the HTML content
+            myWebView.Source = new HtmlWebViewSource
+            {
+                Html = htmlContent
+            };
         }
 
         private async Task InitializeGotchiAsync()

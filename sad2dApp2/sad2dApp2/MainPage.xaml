@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:sad2dApp2.Converters"
-             x:Class="sad2dApp2.MainPage">
+             x:Class="sad2dApp2.MainPage"
+             BackgroundColor="#F9FAFB">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -17,29 +18,38 @@
                                  Spacing="10" 
                                  HorizontalOptions="Center">
                 
-                <Label Text="Pet: Umbreon" 
+                <Label Text="Umbreon" 
                        FontSize="18" 
-                       FontAttributes="Bold" />
+                       FontAttributes="Bold" 
+                       TextColor="#333"/>
 
-                <Image Source="umbreon_render.png"
-                       Aspect="AspectFit"
-                       HeightRequest="250"
-                       HorizontalOptions="Center" />
+                <WebView x:Name="myWebView"
+                         HeightRequest="250"
+                         WidthRequest="250"
+                         HorizontalOptions="Center"
+                         Source="umbreon_render.html" />
+
 
                 <Label Text="Happiness" 
-                       FontSize="14" />
+                       FontSize="14" 
+                       TextColor="#333"/>
      
                 <ProgressBar x:Name="HappinessBar" 
                              Progress="{Binding Happiness}"
                              HeightRequest="6"
-                             ProgressColor="#673AB7"/>
+                             ProgressColor="#673AB7"
+                             BackgroundColor="#c4c4c4"/>
 
                 <Label Text="Wellness" 
-                       FontSize="14" />
+                       FontSize="14" 
+                       TextColor="#333"/>
                 
-                <ProgressBar x:Name="WellnessBar" 
+                <ProgressBar x:Name="WellnessBar"
+                             
                              HeightRequest="6" 
-                             ProgressColor="#673AB7"/>
+                             ProgressColor="#673AB7"
+                             BackgroundColor="#F9FAFB"
+                             />
 
             </VerticalStackLayout>
         </ScrollView>
@@ -49,7 +59,8 @@
             <Label Text="Today's Tasks"
                    FontSize="18"
                    FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+                   HorizontalOptions="Center" 
+                   TextColor="#333"/>
 
             <CollectionView x:Name="TasksList" ItemsSource="{Binding Tasks}">
                 <CollectionView.ItemTemplate>
@@ -58,7 +69,8 @@
                             <HorizontalStackLayout Spacing="10">
                                 <CheckBox IsChecked="{Binding IsCompleted}" />
                                 <Label Text="{Binding Title}"
-                                       TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToTextDecorationConverter}}" />
+                                       TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToTextDecorationConverter}}" 
+                                       TextColor="#333"/>
                             </HorizontalStackLayout>
                         </Frame>
                     </DataTemplate>
@@ -66,25 +78,24 @@
             </CollectionView>
         </VerticalStackLayout>
 
-        <!-- 🔵 Bottom Navigation -->
-        <Grid Grid.Row="2" ColumnDefinitions="*,*,*" VerticalOptions="End">
-            <Button Text="Budgets"
-                    Grid.Column="0"
-                    HeightRequest="80"
-                    FontSize="Header"
-                    Clicked="OnBudgetClicked" />
-
-            <Button Text="Home"
-                    Grid.Column="1"
-                    HeightRequest="80"
-                    FontSize="Header"
-                    BackgroundColor="#673AB7"
-                    TextColor="White" />
-
-            <Button Text="Goals"
-                    Grid.Column="2"
-                    HeightRequest="80"
-                    FontSize="Header"
+        <!-- Bottom nav -->
+        <Grid Grid.Row="2"
+              ColumnDefinitions="*,*,*"
+              HeightRequest="72"
+              BackgroundColor="#F1F1F1"
+              Padding="8,10">
+            <Button Text="Budgets" Grid.Column="0" 
+                    BackgroundColor="Transparent" 
+                    TextColor="#333" 
+                    Clicked="OnBudgetClicked"/>
+            <Button Text="Home" 
+                    Grid.Column="1" 
+                    BackgroundColor="Transparent" 
+                    TextColor="#4CAF50"/>
+            <Button Text="Goals" 
+                    Grid.Column="2" 
+                    BackgroundColor="Transparent" 
+                    TextColor="#333" 
                     Clicked="OnGoalsClicked" />
         </Grid>
     </Grid>
