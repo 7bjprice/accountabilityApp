@@ -64,5 +64,12 @@ namespace sad2dApp2
     public static class GotchiService
     {
         public static AcountaGotchi? Current { get; set; }
+
+        public static event Action OnGotchiUpdated;
+
+        public static void NotifyUpdated()
+        {
+            OnGotchiUpdated?.Invoke();
+        }
     }
 }
