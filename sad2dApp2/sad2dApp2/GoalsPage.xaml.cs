@@ -83,12 +83,15 @@ namespace sad2dApp2
             switch (goalType)
             {
                 case "Daily":
+                    newGoal.Target = 1;
                     DailyGoals.Add(newGoal);
                     break;
                 case "Weekly":
+                    newGoal.Target = 7;
                     WeeklyGoals.Add(newGoal);
                     break;
                 case "Monthly":
+                    newGoal.Target = 30;
                     MonthlyGoals.Add(newGoal);
                     break;
             }
@@ -111,10 +114,50 @@ namespace sad2dApp2
 
         private async void OnMainClicked(object sender, EventArgs e) =>
             await Shell.Current.GoToAsync("///MainPage");
+    private void OnGoalCompleteClicked(object sender, EventArgs e)
+        {
+            if (sender is Button button && button.BindingContext is GoalsItem goal)
+            {
+                goal.Increment();
+
+                // Refresh UI
+                DailyGoalsList.ItemsSource = null;
+                DailyGoalsList.ItemsSource = DailyGoals;
+                WeeklyGoalsList.ItemsSource = null;
+                WeeklyGoalsList.ItemsSource = WeeklyGoals;
+                MonthlyGoalsList.ItemsSource = null;
+                MonthlyGoalsList.ItemsSource = MonthlyGoals;
+            }
+        }
+    }
+    
+}
+    public class GoalsItem
+{
+    public string? Category { get; set; }
+    public int Current { get; set; } = 0;
+    public int Target { get; set; } = 1; // default to daily
+
+    public string Progress => $"{Current}/{Target}";
+
+    public void Increment()
+    {
+        if (Current < Target)
+            Current++;
     }
 
-    public class GoalsItem
-    {
-        public string? Category { get; set; }
-    }
+    
 }
+
+
+//     private void UpdateTotals()
+//         {
+//             double totalSpent = 0;
+//             foreach (var item in GoalsItems)
+//                 totalSpent += item.Spent;
+
+//             double remaining = _totalGoals - totalSpent;
+//             TotalSpentLabel.Text = $"Spent: ${totalSpent:F2}";
+//             RemainingLabel.Text = $"Remaining: ${remaining:F2}";
+//         }
+// }

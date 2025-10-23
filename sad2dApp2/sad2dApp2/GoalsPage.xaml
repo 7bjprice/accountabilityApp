@@ -39,7 +39,16 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame BackgroundColor="#E8F5E9" CornerRadius="10" Padding="10" Margin="5">
-                                <Label Text="{Binding Category}" FontSize="18" TextColor="Black" />
+                                <Grid VerticalOptions="Center" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                   
+                                    <Label Text="{Binding Category}" FontSize="18" TextColor="Black" VerticalOptions="Center" Grid.Column="0"/>
+                                    
+                                    
+                                    <Label Text="{Binding Progress}" FontSize="16" TextColor="Black" VerticalOptions="Center" Grid.Column="1"/>
+                                    
+                                    
+                                    <Button Text="✓" Clicked="OnGoalCompleteClicked" WidthRequest="40" HeightRequest="40" Grid.Column="2"/>
+                                </Grid>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -51,8 +60,17 @@
                 <CollectionView x:Name="WeeklyGoalsList">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame BackgroundColor="#E3F2FD" CornerRadius="10" Padding="10" Margin="5">
-                                <Label Text="{Binding Category}" FontSize="18" TextColor="Black" />
+                            <Frame BackgroundColor="#E8F5E9" CornerRadius="10" Padding="10" Margin="5">
+                                <Grid VerticalOptions="Center" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                    
+                                    <Label Text="{Binding Category}" FontSize="18" TextColor="Black" VerticalOptions="Center" Grid.Column="0"/>
+                                    
+                                    
+                                    <Label Text="{Binding Progress}" FontSize="16" TextColor="Black" VerticalOptions="Center" Grid.Column="1"/>
+                                    
+                                    
+                                    <Button Text="✓" Clicked="OnGoalCompleteClicked" WidthRequest="40" HeightRequest="40" Grid.Column="2"/>
+                                </Grid>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -64,8 +82,17 @@
                 <CollectionView x:Name="MonthlyGoalsList">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame BackgroundColor="#F3E5F5" CornerRadius="10" Padding="10" Margin="5">
-                                <Label Text="{Binding Category}" FontSize="18" TextColor="Black" />
+                            <Frame BackgroundColor="#E8F5E9" CornerRadius="10" Padding="10" Margin="5">
+                                <Grid VerticalOptions="Center" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                   
+                                    <Label Text="{Binding Category}" FontSize="18" TextColor="Black" VerticalOptions="Center" Grid.Column="0"/>
+                                    
+                                   
+                                    <Label Text="{Binding Progress}" FontSize="16" TextColor="Black" VerticalOptions="Center" Grid.Column="1"/>
+                                    
+                                
+                                    <Button Text="✓" Clicked="OnGoalCompleteClicked" WidthRequest="40" HeightRequest="40" Grid.Column="2"/>
+                                </Grid>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

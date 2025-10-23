@@ -132,12 +132,82 @@ namespace sad2dApp2
                 return (new ObservableCollection<BudgetItem>(), 0);
             }
         }
+        class BudgetData
+        {
+            public double TotalBudget { get; set; }
+            public List<BudgetItem> Items { get; set; }
+        }
 
-    }
 
-    class BudgetData
-    {
-        public double TotalBudget { get; set; }
-        public List<BudgetItem> Items { get; set; }
+        public static async Task<bool> SaveGoalsItems(ObservableCollection<GoalsItem> items, double totalGoals)
+        {
+            try
+            {
+                string folderPath = Path.Combine(FileSystem.AppDataDirectory, "goals");
+                Directory.CreateDirectory(folderPath); // Ensure the directory exists
+
+                // Wrap items and totalGoals in GoalsData
+                GoalsData data = new GoalsData
+                {
+                    TotalGoals = totalGoals,
+                    Items = items.ToList()
+                };
+
+                string json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+                string filePath = Path.Combine(folderPath, $"goals.json");
+
+                await File.WriteAllTextAsync(filePath, json);
+                Debug.WriteLine($"Saved goals items to: {filePath}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error saving goals items: {ex.Message}");
+                return false;
+            }
+        }
+
+        public static async Task<(ObservableCollection<GoalsItem>, double)> LoadGoalsItems()
+        {
+            try
+            {
+                string folderPath = Path.Combine(FileSystem.AppDataDirectory, "goals");
+                string filePath = Path.Combine(folderPath, "goals.json");
+
+                if (!File.Exists(filePath))
+                {
+                    Debug.WriteLine("Goals file not found, returning empty collection.");
+                    return (new ObservableCollection<GoalsItem>(), 0);
+                }
+
+                string json = await File.ReadAllTextAsync(filePath);
+
+                // Deserialize into GoalsData
+                var data = JsonSerializer.Deserialize<GoalsData>(json);
+
+                var items = data?.Items != null
+                    ? new ObservableCollection<GoalsItem>(data.Items)
+                    : new ObservableCollection<GoalsItem>();
+
+                double totalGoals = data?.TotalGoals ?? 0;
+
+                Debug.WriteLine($"Loaded {items.Count} goals items with total goals {totalGoals}");
+                return (items, totalGoals);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading goals items: {ex.Message}");
+                return (new ObservableCollection<GoalsItem>(), 0);
+            }
+        }
+
+        // Helper class for JSON serialization
+        class GoalsData
+        {
+            public double TotalGoals { get; set; }
+            public List<GoalsItem> Items { get; set; } = new();
+        }
+
+
     }
 }
