@@ -208,6 +208,75 @@ namespace sad2dApp2
             public List<GoalsItem> Items { get; set; } = new();
         }
 
+        public static async Task<bool> DeleteBudgetFileAsync()
+        {
+            try
+            {
+                string folderPath = Path.Combine(FileSystem.AppDataDirectory, "budget");
+                string filePath = Path.Combine(folderPath, "budget.json");
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    Debug.WriteLine($"Budget file deleted: {filePath}");
+                }
+                else
+                {
+                    Debug.WriteLine("Budget file does not exist, nothing to delete.");
+                }
+
+                // Since the operation is synchronous, wrap in a completed Task
+                await Task.CompletedTask;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error deleting budget file: {ex.Message}");
+                return false;
+            }
+        }
+
+        public static async Task<bool> DeleteAllSaveFilesAsync()
+        {
+            try
+            {
+                // Define all relevant save folders
+                string appData = FileSystem.AppDataDirectory;
+                string[] folders = { "saveData", "budget", "goals" };
+
+                foreach (var folderName in folders)
+                {
+                    string folderPath = Path.Combine(appData, folderName);
+
+                    if (Directory.Exists(folderPath))
+                    {
+                        // Delete all files in the folder
+                        foreach (var file in Directory.GetFiles(folderPath))
+                        {
+                            File.Delete(file);
+                            Debug.WriteLine($"Deleted file: {file}");
+                        }
+
+                        // Optionally delete the folder itself
+                        Directory.Delete(folderPath, false); // false = only if empty
+                        Debug.WriteLine($"Deleted folder: {folderPath}");
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"Folder does not exist: {folderPath}");
+                    }
+                }
+
+                await Task.CompletedTask;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error deleting save files: {ex.Message}");
+                return false;
+            }
+        }
+
 
     }
 }

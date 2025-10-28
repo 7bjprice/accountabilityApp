@@ -104,8 +104,7 @@ namespace sad2dApp2
         }
         private void OnResetClicked(object sender, EventArgs e)
         {
-            GotchiService.Current.Wellness = 100;
-            GotchiService.Current.Happiness = 100;
+            SaveSystem.DeleteAllSaveFilesAsync();
             UpdateBars();
         }
     }
