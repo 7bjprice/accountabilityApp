@@ -56,7 +56,7 @@
 
         <!-- Bottom nav -->
         <Grid Grid.Row="2"
-              ColumnDefinitions="*,*,*"
+              ColumnDefinitions="*,*,*,*"
               HeightRequest="72"
               BackgroundColor="#F1F1F1"
               Padding="8,10">
