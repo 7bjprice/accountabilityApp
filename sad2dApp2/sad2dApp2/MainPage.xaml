@@ -28,8 +28,6 @@
                          WidthRequest="400"
                          HorizontalOptions="Center"/>
 
-
-
                 <Label Text="Happiness" 
                        FontSize="14" 
                        TextColor="#333"/>
@@ -45,11 +43,11 @@
                        TextColor="#333"/>
 
                 <ProgressBar x:Name="WellnessBar"
-                             
+                             Progress="{Binding Wellness}"
                              HeightRequest="6" 
                              ProgressColor="#673AB7"
-                             BackgroundColor="#F9FAFB"
-                             />
+                             BackgroundColor="#c4c4c4"/>
+                
                 <Button Text="Reset" 
                     Grid.Column="2" 
                     BackgroundColor="DarkGreen" 

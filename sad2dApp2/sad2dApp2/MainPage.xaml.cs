@@ -106,6 +106,7 @@ namespace sad2dApp2
         {
             SaveSystem.DeleteAllSaveFilesAsync();
             UpdateBars();
+
         }
     }
 }
