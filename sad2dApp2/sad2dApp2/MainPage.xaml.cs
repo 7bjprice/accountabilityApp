@@ -25,7 +25,14 @@ namespace sad2dApp2
             try
             {
                 Debug.WriteLine("Opening local HTML file: index.html");
-                using var stream = await FileSystem.OpenAppPackageFileAsync("index.html");
+#if ANDROID
+    // Load android.html
+    using var stream = await FileSystem.OpenAppPackageFileAsync("android.html");
+#else
+                // Load windows.html
+                using var stream = await FileSystem.OpenAppPackageFileAsync("windows.html");
+
+#endif
                 Debug.WriteLine("File stream opened successfully.");
 
                 using var reader = new StreamReader(stream);
@@ -70,9 +77,7 @@ namespace sad2dApp2
                 Debug.WriteLine($"Loaded AcountaGotchi: {CurrentAcountaGotchi?.Name}");
             }
 
-            LoadDailyTasks();
             UpdateBars();
-            TasksList.ItemsSource = Tasks;
         }
 
 
@@ -85,12 +90,6 @@ namespace sad2dApp2
             }
             HappinessBar.Progress = GotchiService.Current.Happiness / 100f;
             WellnessBar.Progress = GotchiService.Current.Wellness / 100f;
-        }
-
-        private void LoadDailyTasks()
-        {
-            Tasks.Add(new TaskItem { Title = "Update Budget" });
-            Tasks.Add(new TaskItem { Title = "Update Goals" });
         }
 
 
