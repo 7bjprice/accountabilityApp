@@ -106,6 +106,7 @@ namespace sad2dApp2
         {
             GotchiService.Current.Wellness = 100;
             GotchiService.Current.Happiness = 100;
+            UpdateBars();
         }
     }
 }

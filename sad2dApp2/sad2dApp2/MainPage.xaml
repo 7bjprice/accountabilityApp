@@ -50,13 +50,18 @@
                              ProgressColor="#673AB7"
                              BackgroundColor="#F9FAFB"
                              />
+                <Button Text="Reset" 
+                    Grid.Column="2" 
+                    BackgroundColor="DarkGreen" 
+                    TextColor="white" 
+                    Clicked="OnResetClicked" />
 
             </VerticalStackLayout>
         </ScrollView>
 
         <!-- Bottom nav -->
         <Grid Grid.Row="2"
-              ColumnDefinitions="*,*,*,*"
+              ColumnDefinitions="*,*,*"
               HeightRequest="72"
               BackgroundColor="#F1F1F1"
               Padding="8,10">
@@ -73,11 +78,7 @@
                     BackgroundColor="Transparent" 
                     TextColor="#333" 
                     Clicked="OnGoalsClicked" />
-            <Button Text="Reset" 
-                    Grid.Column="2" 
-                    BackgroundColor="Transparent" 
-                    TextColor="#333" 
-                    Clicked="OnResetClicked" />
+
         </Grid>
     </Grid>
 </ContentPage>
