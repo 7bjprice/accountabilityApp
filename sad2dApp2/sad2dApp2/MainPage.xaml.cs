@@ -103,5 +103,10 @@ namespace sad2dApp2
         {
             await Shell.Current.GoToAsync("///GoalsPage");
         }
+        private void OnResetClicked(object sender, EventArgs e)
+        {
+            GotchiService.Current.Wellness = 100;
+            GotchiService.Current.Happiness = 100;
+        }
     }
 }

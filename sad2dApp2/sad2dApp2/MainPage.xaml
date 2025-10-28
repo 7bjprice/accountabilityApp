@@ -97,6 +97,11 @@
                     BackgroundColor="Transparent" 
                     TextColor="#333" 
                     Clicked="OnGoalsClicked" />
+            <Button Text="Reset" 
+                    Grid.Column="2" 
+                    BackgroundColor="Transparent" 
+                    TextColor="#333" 
+                    Clicked="OnResetClicked" />
         </Grid>
     </Grid>
 </ContentPage>
