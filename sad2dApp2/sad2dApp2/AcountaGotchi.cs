@@ -22,7 +22,7 @@ namespace sad2dApp2
         {
             Name = name;
             Happiness = 100;
-            Wellness = 75;
+            Wellness = 100;
             StartDate = DateTime.Now;
             LastLogin = DateTime.Now;
             SaveSystem.SaveAcountagotchiToFileAsync(name, this);
