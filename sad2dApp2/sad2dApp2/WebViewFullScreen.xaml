@@ -1,0 +1,31 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:sad2dApp2"
+             x:Class="sad2dApp2.WebViewFullScreen"
+             Title="Full Screen"
+             BackgroundColor="Black">
+
+    <Grid>
+
+        <!-- Make the WebView expand to fill the page -->
+        <WebView x:Name="myWebView"
+                 HorizontalOptions="FillAndExpand"
+                 VerticalOptions="FillAndExpand"
+                 BackgroundColor="Black" />
+
+        <ImageButton Source="fullscreen.png"
+                     HeightRequest="36"
+                     WidthRequest="36"
+                     BackgroundColor="Transparent"
+                     CornerRadius="4"
+                     HorizontalOptions="End"
+                     VerticalOptions="Start"
+                     Margin="10"
+                     Padding="6"
+                     Aspect="AspectFit"
+                     SemanticProperties.Hint="Full Screen"
+                     Clicked="OnMinimizeClicked"/>
+
+    </Grid>
+
+</ContentPage>

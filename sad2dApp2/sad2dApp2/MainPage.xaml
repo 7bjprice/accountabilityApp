@@ -23,10 +23,28 @@
                        FontAttributes="Bold" 
                        TextColor="#333"/>
 
-                <WebView x:Name="myWebView"
-                         HeightRequest="400"
-                         WidthRequest="400"
-                         HorizontalOptions="Center"/>
+                <Grid>
+
+                    <WebView x:Name="myWebView"
+                             HeightRequest="400"
+                             WidthRequest="400"
+                             HorizontalOptions="Center"/>
+
+                    <ImageButton Source="fullscreen.png"
+                                 HeightRequest="36"
+                                 WidthRequest="36"
+                                 BackgroundColor="Transparent"  
+                                 CornerRadius="4"             
+                                 HorizontalOptions="End"
+                                 VerticalOptions="Start"
+                                 Margin="10"
+                                 Padding="6"
+                                 Aspect="AspectFit"
+                                 SemanticProperties.Hint="Full Screen"
+                                 Clicked="OnFullScreenClicked"/>
+
+                </Grid>
+
 
                 <Label Text="Happiness" 
                        FontSize="14" 

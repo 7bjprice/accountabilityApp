@@ -16,8 +16,13 @@
         ContentTemplate="{DataTemplate local:BudgetPage}"
         Route="BudgetPage" />
 
-        <ShellContent
+    <ShellContent
         Title="Goals"
         ContentTemplate="{DataTemplate local:GoalsPage}"
         Route="GoalsPage" />
+
+    <ShellContent
+        Title="FullScreen"
+        ContentTemplate="{DataTemplate local:WebViewFullScreen}"
+        Route="WebViewFullScreen" />
 </Shell>
