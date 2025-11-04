@@ -116,7 +116,7 @@ namespace sad2dApp2
 
             if (goalType == "Cancel" || string.IsNullOrWhiteSpace(goalType)) return;
 
-            GoalsItem newGoal = new GoalsItem { Category = goalText };
+            GoalsItem newGoal = new GoalsItem { Category = goalText, IsCompleted = false };
 
             switch (goalType)
             {
@@ -137,15 +137,12 @@ namespace sad2dApp2
 
         private async void OnRenameGoalClicked(object sender, EventArgs e)
         {
-            if (sender is ImageButton button && button.BindingContext is GoalsItem goal)
+            if (sender is Button button && button.BindingContext is GoalsItem goal)
             {
-                string newText = await DisplayPromptAsync("Rename Goal", "Enter new goal text:", initialValue: goal.Category);
-                if (!string.IsNullOrWhiteSpace(newText))
-                {
-                    goal.Category = newText;
-                    RefreshGoalsLists();
-                    SaveGoalsItems();
-                }
+                goal.IsCompleted = !goal.IsCompleted;
+                RefreshGoalsLists();
+                SaveGoalsItems();
+                
             }
         }
 
@@ -198,14 +195,17 @@ namespace sad2dApp2
         {
             if (sender is Button button && button.BindingContext is GoalsItem goal)
             {
-                goal.Increment();
+                // goal.Increment();
 
-                DailyGoalsList.ItemsSource = null;
-                DailyGoalsList.ItemsSource = DailyGoals;
-                WeeklyGoalsList.ItemsSource = null;
-                WeeklyGoalsList.ItemsSource = WeeklyGoals;
-                MonthlyGoalsList.ItemsSource = null;
-                MonthlyGoalsList.ItemsSource = MonthlyGoals;
+                // DailyGoalsList.ItemsSource = null;
+                // DailyGoalsList.ItemsSource = DailyGoals;
+                // WeeklyGoalsList.ItemsSource = null;
+                // WeeklyGoalsList.ItemsSource = WeeklyGoals;
+                // MonthlyGoalsList.ItemsSource = null;
+                // MonthlyGoalsList.ItemsSource = MonthlyGoals;
+                goal.IsCompleted = !goal.IsCompleted;
+                RefreshGoalsLists();
+                SaveGoalsItems();
             }
         }
     }
@@ -214,12 +214,16 @@ namespace sad2dApp2
 public class GoalsItem
 {
     public string? Category { get; set; }
-    public int Current { get; set; } = 0;
-    public int Target { get; set; } = 1;
+    public int Current { get; set; }
+    public int Target { get; set; } 
 
-    public double ProgressValue => (double)Current / Math.Max(Target, 1);
-    public string Progress => $"{Current}/{Target}";
+    // public double ProgressValue => (double)Current / Math.Max(Target, 1);
+    // public string Progress => $"{Current}/{Target}";
+    public bool IsCompleted { get; set; } = false;
+    public bool IsWhy { get; set; } = false;
 
+    // public string StatusText => IsCompleted ? "Completed" : "Not Completed";
+    public double ProgressValue => IsCompleted ? 1 : 0;
     public void Increment()
     {
         if (Current < Target)
