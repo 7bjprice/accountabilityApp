@@ -52,7 +52,7 @@ namespace sad2dApp2
         public void ResetStats()
         {
             Happiness = 100;
-            Wellness = 75;
+            Wellness = 100;
         }
 
         public void SubtractHappiness(float amount)

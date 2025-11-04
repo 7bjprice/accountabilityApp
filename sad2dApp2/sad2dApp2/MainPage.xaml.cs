@@ -2,6 +2,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls; // for WebViewSource
 
 namespace sad2dApp2
 {
@@ -107,6 +110,10 @@ namespace sad2dApp2
             SaveSystem.DeleteAllSaveFilesAsync();
             UpdateBars();
 
+        }
+        private async void OnFullScreenClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("///WebViewFullScreen");
         }
     }
 }
