@@ -96,6 +96,9 @@
                     }
                 });
 
+                // controls which animation is played (if multiple are present)
+                // gltf.animations is an array of THREE.AnimationClip instances
+                // here we just play the first animation
                 if (gltf.animations && gltf.animations.length) {
                     mixer = new THREE.AnimationMixer(pet);
 
