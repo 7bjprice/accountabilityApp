@@ -153,8 +153,8 @@
                         HeightRequest="50"
                         Clicked="OnAddGoalsItemClicked" />
                 <Button Text="Test - Drop 10 Wellness" Clicked="OnTestDropClicked" />
-                <!-- <Button Text="Simulate 1 Day Passed" Clicked="OnSimulateDayClicked"/>
-                <Button Text="Go Back to Today" Clicked="OnResetToTodayClicked"/> -->
+                <Button Text="Simulate 1 Day Passed" Clicked="OnSimulateDayClicked"/>
+                <!-- <Button Text="Go Back to Today" Clicked="OnResetToTodayClicked"/> -->
             </VerticalStackLayout>
         </ScrollView>
         

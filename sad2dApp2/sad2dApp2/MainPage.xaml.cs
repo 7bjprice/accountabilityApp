@@ -19,6 +19,7 @@ namespace sad2dApp2
             _ = InitializeGotchiAsync();
             GotchiService.OnGotchiUpdated += UpdateBars;
             LoadLocalHtml();
+            
         }
 
         private async void LoadLocalHtml()
@@ -80,7 +81,11 @@ namespace sad2dApp2
                 Debug.WriteLine($"Loaded AcountaGotchi: {CurrentAcountaGotchi?.Name}");
             }
 
+            GotchiService.Current.UpdateStatsAfterLoad();
             UpdateBars();
+            await SaveSystem.SaveAcountagotchiToFileAsync(GotchiService.Current.Name, GotchiService.Current);
+
+            
         }
 
 

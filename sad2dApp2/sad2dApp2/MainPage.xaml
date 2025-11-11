@@ -11,7 +11,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="Auto,*,Auto">
+    <Grid RowDefinitions="*,Auto">
         <!-- 🟢 Top Section: Pet info -->
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Padding="20" 

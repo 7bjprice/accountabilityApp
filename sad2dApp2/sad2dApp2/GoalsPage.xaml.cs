@@ -56,6 +56,16 @@ namespace sad2dApp2
         //         await SaveSystem.SaveAcountagotchiToFileAsync(gotchi.Name, gotchi);
         //     }
         // }
+        private async void OnSimulateDayClicked(object sender, EventArgs e)
+        {
+            if (GotchiService.Current != null)
+            {
+                GotchiService.Current.LastDailyDrop = GotchiService.Current.LastDailyDrop.AddDays(-1);
+                GotchiService.Current.UpdateStatsAfterLoad();
+                GotchiService.NotifyUpdated();
+                await SaveSystem.SaveAcountagotchiToFileAsync(GotchiService.Current.Name, GotchiService.Current);
+            }
+        }
 
 
         // Simulate 1 day passing
