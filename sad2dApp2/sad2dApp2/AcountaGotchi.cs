@@ -15,6 +15,8 @@ namespace sad2dApp2
         public float Wellness { get; set; } // Goals
         public DateTime StartDate { get; set; }
         public DateTime LastLogin { get; set; }
+        // public DateTime LastDailyDrop { get; set; } = DateTime.MinValue;
+
 
         float hourlydecay = 6/24f; // 6 points per day
 

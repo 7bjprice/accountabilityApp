@@ -25,15 +25,85 @@ namespace sad2dApp2
         public ObservableCollection<GoalsItem> MonthlyGoals { get; set; } = new();
 
         public GoalsPage()
+
         {
             InitializeComponent();
             DailyGoalsList.ItemsSource = DailyGoals;
             WeeklyGoalsList.ItemsSource = WeeklyGoals;
             MonthlyGoalsList.ItemsSource = MonthlyGoals;
 
+
             StartQuoteRotation();
-            
+
         }
+        // private async Task ApplyDailyDeductionAsync()
+        // {
+        //     if (GotchiService.Current == null) return;
+
+        //     var gotchi = GotchiService.Current;
+        //     DateTime today = DateTime.Now.Date;
+        //     int daysPassed = (today - gotchi.LastDailyDrop.Date).Days;
+
+        //     if (daysPassed > 0)
+        //     {
+        //         float pointsToDeduct = 10 * daysPassed;
+        //         gotchi.Wellness = Math.Max(0, gotchi.Wellness - pointsToDeduct);
+
+        //         // Update LastDailyDrop to today
+        //         gotchi.LastDailyDrop = today;
+
+        //         GotchiService.NotifyUpdated();
+        //         await SaveSystem.SaveAcountagotchiToFileAsync(gotchi.Name, gotchi);
+        //     }
+        // }
+
+
+        // Simulate 1 day passing
+        // private async void OnSimulateDayClicked(object sender, EventArgs e)
+        // {
+        //     if (GotchiService.Current != null)
+        //     {
+        //         // Move LastDailyDrop back by 1 day to simulate a day passing
+        //         GotchiService.Current.LastDailyDrop = GotchiService.Current.LastDailyDrop.AddDays(-1);
+
+        //         // Apply deduction as if a day passed
+        //         await ApplyDailyDeductionAsync();
+        //     }
+        // }
+
+        // // Reset LastDailyDrop to today
+        // private async void OnResetToTodayClicked(object sender, EventArgs e)
+        // {
+        //     if (GotchiService.Current != null)
+        //     {
+        //         GotchiService.Current.LastDailyDrop = DateTime.Now.Date;
+
+        //         GotchiService.NotifyUpdated();
+        //         await SaveSystem.SaveAcountagotchiToFileAsync(
+        //             GotchiService.Current.Name,
+        //             GotchiService.Current
+        //         );
+        //     }
+        // }
+
+
+        private async void OnTestDropClicked(object sender, EventArgs e)
+        {
+            if (GotchiService.Current != null)
+            {
+                GotchiService.Current.Wellness -= 10;
+                if (GotchiService.Current.Wellness < 0)
+                    GotchiService.Current.Wellness = 0;
+
+                GotchiService.NotifyUpdated();
+
+                await SaveSystem.SaveAcountagotchiToFileAsync(
+                    GotchiService.Current.Name,
+                    GotchiService.Current
+                );
+            }
+        }
+
 
         // Quote rotation logic
         private void StartQuoteRotation()
@@ -66,6 +136,7 @@ namespace sad2dApp2
 
         protected override async void OnAppearing()
         {
+            base.OnAppearing();
             _quoteTimer?.Start();
 
             // Load goals from JSON
@@ -95,7 +166,36 @@ namespace sad2dApp2
                         break;
                 }
             }
+
+            // if (GotchiService.Current != null)
+            // {
+            //     // Default LastDailyDrop to today if first load
+            //     if (GotchiService.Current.LastDailyDrop == DateTime.MinValue)
+            //         GotchiService.Current.LastDailyDrop = DateTime.Now.Date;
+
+            //     // Apply daily deduction for each day passed
+            //     DateTime today = DateTime.Now.Date;
+            //     int daysPassed = (today - GotchiService.Current.LastDailyDrop.Date).Days;
+
+            //     if (daysPassed > 0)
+            //     {
+            //         float pointsToDeduct = 10 * daysPassed;
+            //         GotchiService.Current.Wellness = Math.Max(0, GotchiService.Current.Wellness - pointsToDeduct);
+
+            //         // Update LastDailyDrop to today
+            //         GotchiService.Current.LastDailyDrop = today;
+
+            //         GotchiService.NotifyUpdated();
+
+            //         // Save updated Gotchi
+            //         await SaveSystem.SaveAcountagotchiToFileAsync(
+            //             GotchiService.Current.Name,
+            //             GotchiService.Current
+            //         );
+            //     }
+            // }
         }
+
         private async void SaveGoalsItems()
         {
             // Combine all collections into a single list
@@ -142,7 +242,7 @@ namespace sad2dApp2
                 goal.IsCompleted = !goal.IsCompleted;
                 RefreshGoalsLists();
                 SaveGoalsItems();
-                
+
             }
         }
 
@@ -181,7 +281,7 @@ namespace sad2dApp2
 
             MonthlyGoalsList.ItemsSource = null;
             MonthlyGoalsList.ItemsSource = MonthlyGoals;
-        }   
+        }
 
         private async void OnBudgetClicked(object sender, EventArgs e) =>
             await Shell.Current.GoToAsync("///BudgetPage");
@@ -191,7 +291,7 @@ namespace sad2dApp2
 
         private async void OnMainClicked(object sender, EventArgs e) =>
             await Shell.Current.GoToAsync("///MainPage");
-    private void OnGoalCompleteClicked(object sender, EventArgs e)
+        private async void OnGoalCompleteClicked(object sender, EventArgs e)
         {
             if (sender is Button button && button.BindingContext is GoalsItem goal)
             {
@@ -204,18 +304,39 @@ namespace sad2dApp2
                 // MonthlyGoalsList.ItemsSource = null;
                 // MonthlyGoalsList.ItemsSource = MonthlyGoals;
                 goal.IsCompleted = !goal.IsCompleted;
+                if (goal.IsCompleted && GotchiService.Current != null)
+                {
+                    // Add wellness points
+                    GotchiService.Current.Wellness += 2;
+
+                    // Cap wellness at 100
+                    if (GotchiService.Current.Wellness > 100)
+                        GotchiService.Current.Wellness = 100;
+
+                    // Notify other pages that the Gotchi was updated
+                    GotchiService.NotifyUpdated();
+
+                    // Save the updated pet data to JSON
+                    await SaveSystem.SaveAcountagotchiToFileAsync(
+                        GotchiService.Current.Name,
+                        GotchiService.Current
+                    );
+                }
+
                 RefreshGoalsLists();
                 SaveGoalsItems();
             }
         }
     }
-    
+
 }
+
+
 public class GoalsItem
 {
     public string? Category { get; set; }
     public int Current { get; set; }
-    public int Target { get; set; } 
+    public int Target { get; set; }
 
     // public double ProgressValue => (double)Current / Math.Max(Target, 1);
     // public string Progress => $"{Current}/{Target}";
