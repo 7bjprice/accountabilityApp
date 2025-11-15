@@ -292,6 +292,7 @@ namespace sad2dApp2
             MonthlyGoalsList.ItemsSource = null;
             MonthlyGoalsList.ItemsSource = MonthlyGoals;
         }
+        
 
         private async void OnBudgetClicked(object sender, EventArgs e) =>
             await Shell.Current.GoToAsync("///BudgetPage");

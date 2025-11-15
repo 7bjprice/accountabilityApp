@@ -17,6 +17,7 @@ namespace sad2dApp2
         public DateTime LastLogin { get; set; }
         public DateTime LastDailyDrop { get; set; } = DateTime.MinValue;
 
+        public DateTime LastGoalReset { get; set; } = DateTime.MinValue;
 
         float hourlydecay = 6/24f; // 6 points per day
 
@@ -41,6 +42,7 @@ namespace sad2dApp2
 
             UpdateStatsAfterLoad();
         }
+        
 
         public void UpdateStatsAfterLoad()
         {
@@ -79,7 +81,7 @@ namespace sad2dApp2
                 LastLogin = now;
             }
 
-            
+
             // int hoursSinceLastLogin = (int)(DateTime.Now - LastLogin).TotalHours;
             // float decayAmount = hoursSinceLastLogin * hourlydecay;
             // Wellness = Math.Max(0, Wellness - decayAmount);
@@ -95,6 +97,7 @@ namespace sad2dApp2
             // }
             // LastLogin = DateTime.Now;
         }
+        
 
         public void ResetStats()
         {
@@ -106,6 +109,8 @@ namespace sad2dApp2
         {
             Happiness = Math.Max(0, Happiness - amount);
         }
+        
+        
     }
 
     public static class GotchiService
@@ -118,5 +123,6 @@ namespace sad2dApp2
         {
             OnGotchiUpdated?.Invoke();
         }
+        
     }
 }
