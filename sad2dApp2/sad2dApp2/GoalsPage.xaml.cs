@@ -247,12 +247,17 @@ namespace sad2dApp2
 
         private async void OnRenameGoalClicked(object sender, EventArgs e)
         {
-            if (sender is Button button && button.BindingContext is GoalsItem goal)
+            if (sender is ImageButton button && button.BindingContext is GoalsItem goal)
             {
-                goal.IsCompleted = !goal.IsCompleted;
-                RefreshGoalsLists();
-                SaveGoalsItems();
+                string newName = await DisplayPromptAsync("Rename Goal", "Enter new name:", initialValue: goal.Category);
 
+                if (!string.IsNullOrWhiteSpace(newName))
+                {
+                    goal.Category = newName;
+
+                    RefreshGoalsLists();
+                    SaveGoalsItems();
+                }
             }
         }
 
