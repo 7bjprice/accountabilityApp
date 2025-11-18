@@ -11,7 +11,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="Auto,*,Auto">
+    <Grid RowDefinitions="*,Auto">
         <!-- 🟢 Top Section: Pet info -->
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Padding="20" 
@@ -75,7 +75,6 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Bottom nav -->
         <Grid Grid.Row="2"
               ColumnDefinitions="*,*,*"
               HeightRequest="72"
@@ -96,5 +95,6 @@
                     Clicked="OnGoalsClicked" />
 
         </Grid>
+        <!-- Bottom nav -->
     </Grid>
 </ContentPage>

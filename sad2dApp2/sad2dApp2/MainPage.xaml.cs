@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls; // for WebViewSource
+using Plugin.LocalNotification;
 
 namespace sad2dApp2
 {
@@ -15,10 +16,14 @@ namespace sad2dApp2
         public MainPage()
         {
             InitializeComponent();
-
             _ = InitializeGotchiAsync();
             GotchiService.OnGotchiUpdated += UpdateBars;
             LoadLocalHtml();
+            Preferences.Set("LastOpened", DateTime.UtcNow);
+            CheckInactivityAndScheduleNotification();
+            LocalNotificationCenter.Current.Cancel(100);
+
+
         }
 
         private async void LoadLocalHtml()
@@ -57,7 +62,6 @@ namespace sad2dApp2
             Debug.WriteLine("LoadLocalHtml finished.");
         }
 
-
         private async Task InitializeGotchiAsync()
         {
             var acountaGotchiNames = await SaveSystem.GetAllAcountaGotchiNamesAsync();
@@ -83,7 +87,6 @@ namespace sad2dApp2
             UpdateBars();
         }
 
-
         public void UpdateBars()
         {
             if(GotchiService.Current == null)
@@ -95,8 +98,6 @@ namespace sad2dApp2
             WellnessBar.Progress = GotchiService.Current.Wellness / 100f;
         }
 
-
-
         private async void OnBudgetClicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("///BudgetPage");
@@ -105,9 +106,20 @@ namespace sad2dApp2
         {
             await Shell.Current.GoToAsync("///GoalsPage");
         }
-        private void OnResetClicked(object sender, EventArgs e)
+        private async void OnResetClicked(object sender, EventArgs e)
         {
-            SaveSystem.DeleteAllSaveFilesAsync();
+            var request = new NotificationRequest
+            {
+                Title = "Reset",
+                Description = "All data has been reset.",
+                NotificationId = 1,
+                Schedule = new NotificationRequestSchedule
+                {
+                    NotifyTime = DateTime.Now.AddSeconds(5)
+                }
+            };
+            await LocalNotificationCenter.Current.Show(request);
+            await SaveSystem.DeleteAllSaveFilesAsync();
             UpdateBars();
 
         }
@@ -115,5 +127,36 @@ namespace sad2dApp2
         {
             await Shell.Current.GoToAsync("///WebViewFullScreen");
         }
+
+        private void ScheduleDailyNotification()
+        {
+            var request = new NotificationRequest
+            {
+                NotificationId = 100,
+                Title = "We miss you!",
+                Description = "Come check in with your AccountaGotchi 💖",
+                Schedule = new NotificationRequestSchedule
+                {
+                    NotifyTime = DateTime.Now.AddSeconds(5),   // first run 5 seconds from now
+                    RepeatType = NotificationRepeat.Daily
+                }
+            };
+
+            LocalNotificationCenter.Current.Show(request);
+        }
+
+        private void CheckInactivityAndScheduleNotification()
+        {
+            var lastOpened = Preferences.Get("LastOpened", DateTime.UtcNow);
+
+            var elapsed = DateTime.UtcNow - lastOpened;
+
+            if (elapsed >= TimeSpan.FromHours(24))
+            {
+                ScheduleDailyNotification();
+            }
+        }
+
+
     }
 }
