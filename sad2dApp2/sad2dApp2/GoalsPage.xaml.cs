@@ -143,40 +143,109 @@ namespace sad2dApp2
 
             SaveGoalsItems();
         }
-
         protected override async void OnAppearing()
+{
+    base.OnAppearing();
+    _quoteTimer?.Start();
+
+    // Load saved goals
+    var (items, totalGoals) = await SaveSystem.LoadGoalsItems();
+
+    DailyGoals.Clear();
+    WeeklyGoals.Clear();
+    MonthlyGoals.Clear();
+
+    foreach (var item in items)
+    {
+        switch (item.Target)
         {
-            base.OnAppearing();
-            _quoteTimer?.Start();
+            case 1: DailyGoals.Add(item); break;   // Daily
+            case 7: WeeklyGoals.Add(item); break;  // Weekly
+            case 30: MonthlyGoals.Add(item); break; // Monthly
+            default: DailyGoals.Add(item); break;
+        }
+    }
 
-            // Load goals from JSON
-            var (items, totalGoals) = await SaveSystem.LoadGoalsItems();
+    // --- DAILY GOAL RESET CHECK (new clean block) ---
+    var gotchi = GotchiService.Current;
+    if (gotchi != null)
+    {
+        DateTime today = DateTime.Now.Date;
 
-            // Clear current collections
-            DailyGoals.Clear();
-            WeeklyGoals.Clear();
-            MonthlyGoals.Clear();
+        if (gotchi.LastGoalReset != today)
+        {
+            // Reset daily goals only
+            foreach (var goal in DailyGoals)
+                goal.IsCompleted = false;
 
-            // Distribute loaded items into the right collections
-            foreach (var item in items)
-            {
-                switch (item.Target)
-                {
-                    case 1:
-                        DailyGoals.Add(item);
-                        break;
-                    case 7:
-                        WeeklyGoals.Add(item);
-                        break;
-                    case 30:
-                        MonthlyGoals.Add(item);
-                        break;
-                    default:
-                        DailyGoals.Add(item); // fallback
-                        break;
-                }
-            }
+            gotchi.LastGoalReset = today;
 
+            // Save the gotchi
+            await SaveSystem.SaveAcountagotchiToFileAsync(gotchi.Name, gotchi);
+
+            // Save updated goal completion flags
+            SaveGoalsItems();
+
+            RefreshGoalsLists();
+        }
+    }
+}
+
+        // protected override async void OnAppearing()
+        // {
+        //     base.OnAppearing();
+        //     _quoteTimer?.Start();
+
+        //     // Load goals from JSON
+        //     var (items, totalGoals) = await SaveSystem.LoadGoalsItems();
+
+        //     // Clear current collections
+        //     DailyGoals.Clear();
+        //     WeeklyGoals.Clear();
+        //     MonthlyGoals.Clear();
+
+        //     // Distribute loaded items into the right collections
+        //     foreach (var item in items)
+        //     {
+        //         switch (item.Target)
+        //         {
+        //             case 1:
+        //                 DailyGoals.Add(item);
+        //                 break;
+        //             case 7:
+        //                 WeeklyGoals.Add(item);
+        //                 break;
+        //             case 30:
+        //                 MonthlyGoals.Add(item);
+        //                 break;
+        //             default:
+        //                 DailyGoals.Add(item); // fallback
+        //                 break;
+        //         }
+
+        //          var gotchi = GotchiService.Current;
+        //             if (gotchi != null)
+        //             {
+        //                 DateTime today = DateTime.Now.Date;
+
+        //                 if (gotchi.LastGoalReset != today)
+        //                 {
+        //                     // Reset daily goals only
+        //                     foreach (var goal in DailyGoals)
+        //                         goal.IsCompleted = false;
+
+        //                     gotchi.LastGoalReset = today;
+
+        //                     // Save the gotchi
+        //                     await SaveSystem.SaveAcountagotchiToFileAsync(gotchi.Name, gotchi);
+
+        //                     // Save updated goal completion flags
+        //                     SaveGoalsItems();
+
+        //                     RefreshGoalsLists();
+        //                 }
+        //             }
+        //     }
             // if (GotchiService.Current != null)
             // {
             //     // Default LastDailyDrop to today if first load
@@ -204,7 +273,7 @@ namespace sad2dApp2
             //         );
             //     }
             // }
-        }
+        
 
         private async void SaveGoalsItems()
         {
