@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
-using LiveChartsCore.SkiaSharpView.Maui;
-using SkiaSharp;
-using SkiaSharp.Views.Maui.Controls.Hosting;
-using LiveChartsCore;
+using Plugin.LocalNotification;
 
 namespace sad2dApp2
 {
@@ -13,10 +10,9 @@ namespace sad2dApp2
         {
             var builder = MauiApp.CreateBuilder();
             builder
-                .UseSkiaSharp()
-                .UseLiveCharts();
-            // .UseLiveCharts(config => config  // LiveCharts configuration section
-            //     .AddLiveChartsAppSettings()) // if required, configure LiveCharts settings here
+
+                .UseLocalNotification();
+
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()

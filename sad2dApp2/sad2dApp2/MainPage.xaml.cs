@@ -4,121 +4,249 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Maui.Controls; // for WebViewSource
+using Microsoft.Maui.Controls;
+using Plugin.LocalNotification;
 
 namespace sad2dApp2
 {
     public partial class MainPage : ContentPage
     {
-        public ObservableCollection<TaskItem> Tasks { get; set; } = new();
+        private const int DailyReminderNotificationId = 100;
+        private const int ResetNotificationId = 1;
 
         public MainPage()
         {
             InitializeComponent();
-
-            _ = InitializeGotchiAsync();
-            GotchiService.OnGotchiUpdated += UpdateBars;
-            LoadLocalHtml();
-            
+            _ = InitializeAsync();
         }
 
-        private async void LoadLocalHtml()
+        // ---------------------------
+        // Lifecycle Methods
+        // ---------------------------
+        protected override void OnAppearing()
         {
-            Debug.WriteLine("LoadLocalHtml started.");
+            base.OnAppearing();
+            if (GotchiService.Current != null)
+            {
+                GotchiService.OnGotchiUpdated += UpdateBars;
+                UpdateBars();
+            }
+        }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            GotchiService.OnGotchiUpdated -= UpdateBars;
+        }
+
+        // ---------------------------
+        // Initialization
+        // ---------------------------
+        private async Task InitializeAsync()
+        {
             try
             {
-                Debug.WriteLine("Opening local HTML file: index.html");
-#if ANDROID
-    // Load android.html
-    using var stream = await FileSystem.OpenAppPackageFileAsync("android.html");
-#else
-                // Load windows.html
-                using var stream = await FileSystem.OpenAppPackageFileAsync("windows.html");
+                await Task.WhenAll(
+                    InitializeGotchiAsync(),
+                    LoadLocalHtmlAsync()
+                );
 
-#endif
-                Debug.WriteLine("File stream opened successfully.");
-
-                using var reader = new StreamReader(stream);
-                string htmlContent = await reader.ReadToEndAsync();
-                Debug.WriteLine("HTML content read successfully. Length: " + htmlContent.Length);
-
-                Debug.WriteLine("Setting WebView source.");
-                myWebView.Source = new HtmlWebViewSource
-                {
-                    Html = htmlContent
-                };
-                Debug.WriteLine("WebView source set successfully.");
+                await OnAppOpenedAsync();
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception in LoadLocalHtml: " + ex);
+                Debug.WriteLine($"Initialization Error: {ex}");
+                await DisplayAlert("Error", "Failed to initialize app. Please restart.", "OK");
             }
-
-            Debug.WriteLine("LoadLocalHtml finished.");
         }
-
 
         private async Task InitializeGotchiAsync()
         {
-            var acountaGotchiNames = await SaveSystem.GetAllAcountaGotchiNamesAsync();
-            Debug.WriteLine($"Found {acountaGotchiNames.Count} AcountaGotchi(s).");
-
-            if (acountaGotchiNames.Count == 0)
+            try
             {
-                // No AcountaGotchi found, create and save a new one
-                var newAcountaGotchi = new AcountaGotchi("Default");
-                GotchiService.Current = newAcountaGotchi;
+                var gotchiNames = await SaveSystem.GetAllAcountaGotchiNamesAsync();
 
-                await SaveSystem.SaveAcountagotchiToFileAsync(newAcountaGotchi.Name, newAcountaGotchi);
-                Debug.WriteLine($"Created and saved new AcountaGotchi: {newAcountaGotchi.Name}");
+                if (gotchiNames == null || gotchiNames.Count == 0)
+                {
+                    var newGotchi = new AcountaGotchi("Default");
+                    GotchiService.Current = newGotchi;
+                    await SaveSystem.SaveAcountagotchiToFileAsync(newGotchi.Name, newGotchi);
+                }
+                else
+                {
+                    GotchiService.Current =
+                        await SaveSystem.LoadAcountagotchiAsync(gotchiNames[0]);
+                }
+
+                UpdateBars();
             }
-            else
+            catch (Exception ex)
             {
-                // Load the first AcountaGotchi
-                var CurrentAcountaGotchi = await SaveSystem.LoadAcountagotchiAsync(acountaGotchiNames[0]);
-                GotchiService.Current = CurrentAcountaGotchi;
-                Debug.WriteLine($"Loaded AcountaGotchi: {CurrentAcountaGotchi?.Name}");
+                Debug.WriteLine($"InitializeGotchi Error: {ex}");
+                GotchiService.Current = new AcountaGotchi("Default");
+                UpdateBars();
             }
-
-            GotchiService.Current.UpdateStatsAfterLoad();
-            UpdateBars();
-            await SaveSystem.SaveAcountagotchiToFileAsync(GotchiService.Current.Name, GotchiService.Current);
-
-            
         }
 
+        // ---------------------------
+        // Load local HTML into WebView
+        // ---------------------------
+        private async Task LoadLocalHtmlAsync()
+        {
+            try
+            {
+                string fileName =
+#if ANDROID
+                    "android.html";
+#else
+                    "windows.html";
+#endif
+                using var stream = await FileSystem.OpenAppPackageFileAsync(fileName);
+                using var reader = new StreamReader(stream);
+                string htmlContent = await reader.ReadToEndAsync();
 
+                myWebView.Source = new HtmlWebViewSource { Html = htmlContent };
+            }
+            catch (FileNotFoundException)
+            {
+                myWebView.Source = new HtmlWebViewSource
+                {
+                    Html = "<html><body><h1>Welcome to AccountaGotchi</h1></body></html>"
+                };
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"LoadLocalHtml Error: {ex}");
+            }
+        }
+
+        // ---------------------------
+        // Update UI
+        // ---------------------------
         public void UpdateBars()
         {
-            if(GotchiService.Current == null)
+            if (GotchiService.Current == null) return;
+
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                Debug.WriteLine("GotchiService.Current is null, cannot update bars.");
-                return;
+                HappinessBar.Progress = Math.Clamp(GotchiService.Current.Happiness / 100f, 0f, 1f);
+                WellnessBar.Progress = Math.Clamp(GotchiService.Current.Wellness / 100f, 0f, 1f);
+            });
+        }
+
+        // ---------------------------
+        // Navigation buttons
+        // ---------------------------
+        private async void OnBudgetClicked(object sender, EventArgs e) =>
+            await SafeNavigateAsync("///BudgetPage", "Budget page");
+
+        private async void OnGoalsClicked(object sender, EventArgs e) =>
+            await SafeNavigateAsync("///GoalsPage", "Goals page");
+
+        private async void OnFullScreenClicked(object sender, EventArgs e) =>
+            await SafeNavigateAsync("///WebViewFullScreen", "full screen view");
+
+        private async Task SafeNavigateAsync(string route, string pageName)
+        {
+            try
+            {
+                await Shell.Current.GoToAsync(route);
             }
-            HappinessBar.Progress = GotchiService.Current.Happiness / 100f;
-            WellnessBar.Progress = GotchiService.Current.Wellness / 100f;
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Navigation Error: {ex}");
+                await DisplayAlert("Error", $"Failed to navigate to {pageName}.", "OK");
+            }
         }
 
+        // ---------------------------
+        // Reset data button
+        // ---------------------------
+        private async void OnResetClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                bool confirm = await DisplayAlert(
+                    "Reset Data",
+                    "Are you sure you want to reset all data? This cannot be undone.",
+                    "Yes, Reset",
+                    "Cancel"
+                );
 
+                if (!confirm) return;
 
-        private async void OnBudgetClicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("///BudgetPage");
-        }
-        private async void OnGoalsClicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("///GoalsPage");
-        }
-        private void OnResetClicked(object sender, EventArgs e)
-        {
-            SaveSystem.DeleteAllSaveFilesAsync();
-            UpdateBars();
+                await SaveSystem.DeleteAllSaveFilesAsync();
 
+                var newGotchi = new AcountaGotchi("Default");
+                GotchiService.Current = newGotchi;
+                await SaveSystem.SaveAcountagotchiToFileAsync(newGotchi.Name, newGotchi);
+
+                UpdateBars();
+
+                var request = new NotificationRequest
+                {
+                    NotificationId = ResetNotificationId,
+                    Title = "Reset Complete",
+                    Description = "All data has been reset.",
+                    Schedule = new NotificationRequestSchedule
+                    {
+                        NotifyTime = DateTime.Now.AddSeconds(5)
+                    }
+                };
+
+                await LocalNotificationCenter.Current.Show(request);
+
+                await DisplayAlert("Success", "All data has been reset.", "OK");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Reset Error: {ex}");
+                await DisplayAlert("Error", "Failed to reset data.", "OK");
+            }
         }
-        private async void OnFullScreenClicked(object sender, EventArgs e)
+
+        // ---------------------------
+        // Daily Reminder
+        // ---------------------------
+        private async Task OnAppOpenedAsync()
         {
-            await Shell.Current.GoToAsync("///WebViewFullScreen");
+            try
+            {
+                Preferences.Set("LastOpened", DateTime.UtcNow.ToString("o"));
+                await EnsureDailyReminderScheduledAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"OnAppOpened Error: {ex}");
+            }
+        }
+
+        private async Task EnsureDailyReminderScheduledAsync()
+        {
+            try
+            {
+                // Cancel any existing reminder to avoid duplicates
+                LocalNotificationCenter.Current.Cancel(DailyReminderNotificationId);
+
+                var request = new NotificationRequest
+                {
+                    NotificationId = DailyReminderNotificationId,
+                    Title = "We miss you!",
+                    Description = "Come check in with your AccountaGotchi 💖",
+                    Schedule = new NotificationRequestSchedule
+                    {
+                        NotifyTime = DateTime.Now.AddDays(1),
+                        NotifyRepeatInterval = TimeSpan.FromDays(1)
+                    }
+                };
+
+                await LocalNotificationCenter.Current.Show(request);
+                Debug.WriteLine($"Daily reminder scheduled for {request.Schedule.NotifyTime}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"EnsureDailyReminder Error: {ex}");
+            }
         }
     }
 }
