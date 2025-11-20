@@ -392,7 +392,7 @@ namespace sad2dApp2
                 if (goal.IsCompleted && GotchiService.Current != null)
                 {
                     // Add wellness points
-                    GotchiService.Current.Wellness += 2;
+                    GotchiService.Current.Wellness += 3;
 
                     // Cap wellness at 100
                     if (GotchiService.Current.Wellness > 100)
