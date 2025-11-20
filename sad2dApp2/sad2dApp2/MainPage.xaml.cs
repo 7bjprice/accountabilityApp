@@ -17,12 +17,21 @@ namespace sad2dApp2
         public MainPage()
         {
             InitializeComponent();
-            _ = InitializeGotchiAsync();
-            GotchiService.OnGotchiUpdated += UpdateBars;
-            LoadLocalHtml();
-            Preferences.Set("LastOpened", DateTime.UtcNow);
-            CheckInactivityAndScheduleNotification();
-            LocalNotificationCenter.Current.Cancel(100);
+            _ = InitializeAsync();
+        }
+
+        // ---------------------------
+        // Lifecycle Methods
+        // ---------------------------
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            if (GotchiService.Current != null)
+            {
+                GotchiService.OnGotchiUpdated += UpdateBars;
+                UpdateBars();
+            }
+        }
 
         protected override void OnDisappearing()
         {
@@ -30,6 +39,25 @@ namespace sad2dApp2
             GotchiService.OnGotchiUpdated -= UpdateBars;
         }
 
+        // ---------------------------
+        // Initialization
+        // ---------------------------
+        private async Task InitializeAsync()
+        {
+            try
+            {
+                await Task.WhenAll(
+                    InitializeGotchiAsync(),
+                    LoadLocalHtmlAsync()
+                );
+
+                await OnAppOpenedAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Initialization Error: {ex}");
+                await DisplayAlert("Error", "Failed to initialize app. Please restart.", "OK");
+            }
         }
 
         private async Task InitializeGotchiAsync()
@@ -115,8 +143,8 @@ namespace sad2dApp2
         private async void OnGoalsClicked(object sender, EventArgs e) =>
             await SafeNavigateAsync("///GoalsPage", "Goals page");
 
-            UpdateBars();
-        }
+        private async void OnFullScreenClicked(object sender, EventArgs e) =>
+            await SafeNavigateAsync("///WebViewFullScreen", "full screen view");
 
         private async Task SafeNavigateAsync(string route, string pageName)
         {
