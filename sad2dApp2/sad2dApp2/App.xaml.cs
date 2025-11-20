@@ -11,5 +11,11 @@
         {
             return new Window(new AppShell());
         }
+
+        protected override void OnSleep()
+        {
+            Preferences.Set("LastOpened", DateTime.UtcNow);
+        }
+
     }
 }
