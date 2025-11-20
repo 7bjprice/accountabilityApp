@@ -19,11 +19,15 @@ namespace sad2dApp2
             _ = InitializeGotchiAsync();
             GotchiService.OnGotchiUpdated += UpdateBars;
             LoadLocalHtml();
+<<<<<<< HEAD
             Preferences.Set("LastOpened", DateTime.UtcNow);
             CheckInactivityAndScheduleNotification();
             LocalNotificationCenter.Current.Cancel(100);
 
 
+=======
+            
+>>>>>>> 791bec08ad9613fe122e34af6dd582006f2bdf7f
         }
 
         private async void LoadLocalHtml()
@@ -84,7 +88,11 @@ namespace sad2dApp2
                 Debug.WriteLine($"Loaded AcountaGotchi: {CurrentAcountaGotchi?.Name}");
             }
 
+            GotchiService.Current.UpdateStatsAfterLoad();
             UpdateBars();
+            await SaveSystem.SaveAcountagotchiToFileAsync(GotchiService.Current.Name, GotchiService.Current);
+
+            
         }
 
         public void UpdateBars()
