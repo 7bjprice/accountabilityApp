@@ -15,6 +15,9 @@ namespace sad2dApp2
         public float Wellness { get; set; } // Goals
         public DateTime StartDate { get; set; }
         public DateTime LastLogin { get; set; }
+        public DateTime LastDailyDrop { get; set; } = DateTime.MinValue;
+
+        public DateTime LastGoalReset { get; set; } = DateTime.MinValue;
 
         float hourlydecay = 6/24f; // 6 points per day
 
@@ -39,15 +42,62 @@ namespace sad2dApp2
 
             UpdateStatsAfterLoad();
         }
+        
 
         public void UpdateStatsAfterLoad()
         {
-            int hoursSinceLastLogin = (int)(DateTime.Now - LastLogin).TotalHours;
-            float decayAmount = hoursSinceLastLogin * hourlydecay;
-            Wellness = Math.Max(0, Wellness - decayAmount);
+            {
+                DateTime now = DateTime.Now;
+                DateTime today = now.Date;
 
-            LastLogin = DateTime.Now;
+                // Initialize missing fields
+                if (LastLogin == DateTime.MinValue)
+                    LastLogin = now;
+
+                if (LastDailyDrop == DateTime.MinValue)
+                    LastDailyDrop = today;
+
+                // ---- DAILY DEDUCTION ----
+                int daysPassed = (today - LastDailyDrop.Date).Days;
+
+                if (daysPassed > 0)
+                {
+                    float dailyDeduction = 10 * daysPassed;
+                    Wellness = Math.Max(0, Wellness - dailyDeduction);
+                    LastDailyDrop = today; // Only update once per real new day
+                }
+
+                // ---- OPTIONAL: HOURLY DECAY ----
+                // Only apply decay if you *want* gradual loss during the day.
+                // Comment this block out entirely if you only want daily drops.
+                int hoursSinceLastLogin = (int)(now - LastLogin).TotalHours;
+                if (hoursSinceLastLogin > 0 && hoursSinceLastLogin < 24) // cap within a day
+                {
+                    float decayAmount = hoursSinceLastLogin * hourlydecay;
+                    Wellness = Math.Max(0, Wellness - decayAmount);
+                }
+
+                // Update login time
+                LastLogin = now;
+            }
+
+
+            // int hoursSinceLastLogin = (int)(DateTime.Now - LastLogin).TotalHours;
+            // float decayAmount = hoursSinceLastLogin * hourlydecay;
+            // Wellness = Math.Max(0, Wellness - decayAmount);
+
+            // DateTime today = DateTime.Now.Date;
+            // int daysPassed = (today - LastDailyDrop.Date).Days;
+
+            // if (daysPassed > 0)
+            // {
+            //     float dailyDeduction = 10 * daysPassed;
+            //     Wellness = Math.Max(0, Wellness - dailyDeduction);
+            //     LastDailyDrop = today;
+            // }
+            // LastLogin = DateTime.Now;
         }
+        
 
         public void ResetStats()
         {
@@ -59,6 +109,8 @@ namespace sad2dApp2
         {
             Happiness = Math.Max(0, Happiness - amount);
         }
+        
+        
     }
 
     public static class GotchiService
@@ -71,5 +123,6 @@ namespace sad2dApp2
         {
             OnGotchiUpdated?.Invoke();
         }
+        
     }
 }

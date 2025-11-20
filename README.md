@@ -1,2 +1,2 @@
-Accountability App - Bryson Price, Alex, Zaugg, Michael Brightman
+My Accountagotchi - Bryson Price, Alex, Zaugg, Michael Brightman
 
