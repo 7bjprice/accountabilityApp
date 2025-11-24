@@ -78,10 +78,10 @@
         // ----- Load Tamagotchi Model -----
         const loader = new GLTFLoader();
         loader.load(
-            "/models/umbreon.glb", // Add your model URL here
+            "/models/Lucario.glb", // Add your model URL here
             function (gltf) {
                 pet = gltf.scene;
-                pet.scale.set(1.2, 1.2, 1.2);
+                pet.scale.set(0.01, 0.01, 0.01);
                 pet.position.x = 0.2;
                 scene.add(pet);
 
