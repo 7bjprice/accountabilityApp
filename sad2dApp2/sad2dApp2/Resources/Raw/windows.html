@@ -26,158 +26,143 @@
 
 <body>
 <script type="module">
-    import * as THREE from 'three';
-    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-    let pet;
-    let mixer;
-    let currentActionIndex = 0;
-    let actions = [];
-    let currentScore = 100;
+let pet;
+let mixer;
+let currentActionIndex = 0;
+let actions = [];
+let currentScore = 100;
+let animationsReady = false;
+let pendingScore = null; // store score updates before animations are ready
 
-    function updateCurrentScore(num) {
-        currentScore = num;
+// ----- Update score function -----
+function updateCurrentScore(num) {
+    currentScore = num;
 
-        if(currentScore > 95) {
-            setAnimation(3);
-        }
-        else if(currentScore > 87) {
-            setAnimation(1);
-        }
-        else if (currentScore > 75) {
-            setAnimation(0);
-        }
-        else if (currentScore > 58) {
-            setAnimation(5);
-        }
-        else if (currentScore > 35) {
-            setAnimation(4);
-        }
-        else {
-            setAnimation(2);
-        }
+    if (!animationsReady) {
+        // store score to update later
+        pendingScore = num;
+        return;
     }
 
-    // ----- Scene and Camera -----
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xfff0c0);
+    if(currentScore > 95) { setAnimation(3); }
+    else if(currentScore > 87) { setAnimation(1); }
+    else if(currentScore > 75) { setAnimation(0); }
+    else if(currentScore > 58) { setAnimation(5); }
+    else if(currentScore > 35) { setAnimation(4); }
+    else { setAnimation(2); }
+}
 
-    const camera = new THREE.PerspectiveCamera(
-        40,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-    );
-    camera.position.set(1, 2, 5);
+window.updateCurrentScore = updateCurrentScore; // expose globally
 
-    // ----- Renderer -----
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    document.body.appendChild(renderer.domElement);
+// ----- Scene and Camera -----
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xfff0c0);
 
-    // ----- Lighting -----
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-    scene.add(ambientLight);
+const camera = new THREE.PerspectiveCamera(
+    40,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+);
+camera.position.set(1, 2, 5);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    keyLight.position.set(5, 10, 5);
-    keyLight.castShadow = true;
-    scene.add(keyLight);
+// ----- Renderer -----
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
 
-    const fillLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    fillLight.position.set(-5, 5, -5);
-    scene.add(fillLight);
+// ----- Lighting -----
+scene.add(new THREE.AmbientLight(0xffffff, 1));
 
-    // ----- Ground -----
-    const groundGeometry = new THREE.CircleGeometry(2, 64);
-    const groundMaterial = new THREE.MeshStandardMaterial({
-        color: 0xa0ffb0,
-        roughness: 0.8
-    });
-    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-    ground.rotation.x = -Math.PI / 2;
-    ground.receiveShadow = true;
-    scene.add(ground);
+const keyLight = new THREE.DirectionalLight(0xffffff, 1.5);
+keyLight.position.set(5, 10, 5);
+keyLight.castShadow = true;
+scene.add(keyLight);
 
-    // ----- Load Model -----
-    const loader = new GLTFLoader();
-    loader.load(
-        "/models/Lucario.glb",
-        function (gltf) {
-            pet = gltf.scene;
-            pet.scale.set(0.01, 0.01, 0.01);
-            pet.position.x = 0.2;
-            scene.add(pet);
+const fillLight = new THREE.DirectionalLight(0xffffff, 0.5);
+fillLight.position.set(-5, 5, -5);
+scene.add(fillLight);
 
-            pet.traverse((node) => {
-                if (node.isMesh) {
-                    node.castShadow = true;
-                    node.receiveShadow = true;
-                    if (node.material) {
-                        node.material.metalness = 0;
-                        node.material.roughness = 0.7;
-                    }
+// ----- Ground -----
+const groundGeometry = new THREE.CircleGeometry(2, 64);
+const groundMaterial = new THREE.MeshStandardMaterial({ color: 0xa0ffb0, roughness: 0.8 });
+const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+ground.rotation.x = -Math.PI / 2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// ----- Load Model -----
+const loader = new GLTFLoader();
+loader.load(
+    "/models/Lucario.glb",
+    function (gltf) {
+        pet = gltf.scene;
+        pet.scale.set(0.01, 0.01, 0.01);
+        pet.position.x = 0.2;
+        scene.add(pet);
+
+        pet.traverse((node) => {
+            if (node.isMesh) {
+                node.castShadow = true;
+                node.receiveShadow = true;
+                if (node.material) {
+                    node.material.metalness = 0;
+                    node.material.roughness = 0.7;
                 }
-            });
-
-            // Handle animations
-            if (gltf.animations && gltf.animations.length) {
-                mixer = new THREE.AnimationMixer(pet);
-
-                actions = gltf.animations.map((clip) =>
-                    mixer.clipAction(clip)
-                );
-
-                if (actions.length > 0) {
-                    actions[0].play(); // default animation
-                }
-
-                // Global function to set animation by index
-                window.setAnimation = function (index) {
-                    if (!actions.length) return;
-
-                    // stop old action
-                    actions[currentActionIndex].stop();
-
-                    // clamp index to valid range
-                    currentActionIndex = Math.max(
-                        0,
-                        Math.min(index, actions.length - 1)
-                    );
-
-                    // play new action
-                    actions[currentActionIndex].reset().play();
-                };
             }
-        },
-        undefined,
-        function (error) {
-            console.error(error);
-        }
-    );
+        });
 
-    // ----- Resize Handler -----
-    window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+        // Handle animations
+        if (gltf.animations && gltf.animations.length) {
+            mixer = new THREE.AnimationMixer(pet);
+            actions = gltf.animations.map((clip) => mixer.clipAction(clip));
 
-    // ----- Animation Loop -----
-    const clock = new THREE.Clock();
-    function animate() {
-        const delta = clock.getDelta();
-        if (mixer) mixer.update(delta);
+            if (actions.length > 0) actions[0].play();
 
-        if (pet) {
-            camera.lookAt(pet.position);
+            // Global function to set animation by index
+            window.setAnimation = function (index) {
+                if (!actions.length) return;
+                actions[currentActionIndex].stop();
+                currentActionIndex = Math.max(0, Math.min(index, actions.length - 1));
+                actions[currentActionIndex].reset().play();
+            };
         }
 
-        renderer.render(scene, camera);
-    }
-    renderer.setAnimationLoop(animate);
+        // Mark animations ready and apply any pending score
+        animationsReady = true;
+        if (pendingScore !== null) {
+            updateCurrentScore(pendingScore);
+            pendingScore = null;
+        }
+    },
+    undefined,
+    function (error) { console.error(error); }
+);
+
+// ----- Resize Handler -----
+window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ----- Animation Loop -----
+const clock = new THREE.Clock();
+function animate() {
+    const delta = clock.getDelta();
+    if (mixer) mixer.update(delta);
+
+    if (pet) camera.lookAt(pet.position);
+
+    renderer.render(scene, camera);
+}
+renderer.setAnimationLoop(animate);
 </script>
+
 </body>
 </html>
