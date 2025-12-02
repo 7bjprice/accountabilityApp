@@ -18,7 +18,7 @@
                                  Spacing="10" 
                                  HorizontalOptions="Center">
 
-                <Label Text="Umbreon" 
+                <Label Text="Lucario" 
                        FontSize="18" 
                        FontAttributes="Bold" 
                        TextColor="#333"/>
