@@ -106,6 +106,8 @@ namespace sad2dApp2
                 string htmlContent = await reader.ReadToEndAsync();
 
                 myWebView.Source = new HtmlWebViewSource { Html = htmlContent };
+
+
             }
             catch (FileNotFoundException)
             {
@@ -132,7 +134,21 @@ namespace sad2dApp2
                 HappinessBar.Progress = Math.Clamp(GotchiService.Current.Happiness / 100f, 0f, 1f);
                 WellnessBar.Progress = Math.Clamp(GotchiService.Current.Wellness / 100f, 0f, 1f);
             });
+
+            _ = UpdateScoreInWebViewAsync(
+                (GotchiService.Current.Happiness + GotchiService.Current.Wellness) / 2
+            );
         }
+
+        private async Task UpdateScoreInWebViewAsync(int score)
+        {
+            if (myWebView != null)
+            {
+                string js = $"updateCurrentScore({score});";
+                await myWebView.EvaluateJavaScriptAsync(js);
+            }
+        }
+
 
         // ---------------------------
         // Navigation buttons
