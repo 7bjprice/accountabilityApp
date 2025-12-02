@@ -56,57 +56,64 @@ namespace sad2dApp2
 
         private async void OnAddExpenseClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton;
-            var item = button?.BindingContext as BudgetItem;
-            if (item == null) return;
-
-            string expenseStr = await DisplayPromptAsync("Add Expense", $"Enter expense amount for {item.Category}:", keyboard: Keyboard.Numeric);
-
-            if (double.TryParse(expenseStr, out double expense) && expense > 0)
+            if (_totalBudget != 0)
             {
-                item.Spent += expense;
+                var button = sender as ImageButton;
+                var item = button?.BindingContext as BudgetItem;
+                if (item == null) return;
 
-                item.Remaining = item.Amount - item.Spent;
-                item.Progress = Math.Min(item.Spent / item.Amount, 1);
+                string expenseStr = await DisplayPromptAsync("Add Expense", $"Enter expense amount for {item.Category}:", keyboard: Keyboard.Numeric);
 
-                // Refresh UI
-                BudgetList.ItemsSource = null;
-                BudgetList.ItemsSource = BudgetItems;
-                UpdateTotals();
-
-                // Check if over budget
-
-                if (item.Remaining < 0)
+                if (double.TryParse(expenseStr, out double expense) && expense > 0)
                 {
-                    await DisplayAlert("Over Budget", $"You have exceeded your budget for {item.Category}!", "OK");
+                    item.Spent += expense;
 
-                    float points_to_deduct = ((float)item.Amount / (float)_totalBudget) * (((float)(item.Spent)-(float)(item.Amount)) * (float)_penaltyCoefficient);
+                    item.Remaining = item.Amount - item.Spent;
+                    item.Progress = Math.Min(item.Spent / item.Amount, 1);
 
-                    points_to_deduct = Math.Min(points_to_deduct, GotchiService.Current.Happiness);
+                    // Refresh UI
+                    BudgetList.ItemsSource = null;
+                    BudgetList.ItemsSource = BudgetItems;
+                    UpdateTotals();
 
+                    // Check if over budget
 
-
-                    // Debug
-                    Debug.WriteLine($"DEBUG → totalBudget={_totalBudget}, " +
-                        $"amount={item.Amount}, " +
-                        $"spent={item.Spent}, " +
-                        $"points_to_deduct={points_to_deduct}");
-
-                    // Update happiness points from AcountaGotchi
-                    if (GotchiService.Current != null)
+                    if (item.Remaining < 0)
                     {
-                        GotchiService.Current.SubtractHappiness(points_to_deduct);
-                        GotchiService.NotifyUpdated();
-                        await SaveSystem.SaveAcountagotchiToFileAsync(
-                            GotchiService.Current.Name,
-                            GotchiService.Current
-                        );
+                        await DisplayAlert("Over Budget", $"You have exceeded your budget for {item.Category}!", "OK");
+
+                        float points_to_deduct = ((float)item.Amount / (float)_totalBudget) * (((float)(item.Spent) - (float)(item.Amount)) * (float)_penaltyCoefficient);
+
+                        points_to_deduct = Math.Min(points_to_deduct, GotchiService.Current.Happiness);
+
+
+
+                        // Debug
+                        Debug.WriteLine($"DEBUG → totalBudget={_totalBudget}, " +
+                            $"amount={item.Amount}, " +
+                            $"spent={item.Spent}, " +
+                            $"points_to_deduct={points_to_deduct}");
+
+                        // Update happiness points from AcountaGotchi
+                        if (GotchiService.Current != null)
+                        {
+                            GotchiService.Current.SubtractHappiness(points_to_deduct);
+                            GotchiService.NotifyUpdated();
+                            await SaveSystem.SaveAcountagotchiToFileAsync(
+                                GotchiService.Current.Name,
+                                GotchiService.Current
+                            );
+                        }
                     }
                 }
+                else if (!string.IsNullOrWhiteSpace(expenseStr))
+                {
+                    await DisplayAlert("Invalid Input", "Please enter a valid expense amount.", "OK");
+                }
             }
-            else if (!string.IsNullOrWhiteSpace(expenseStr))
+            else
             {
-                await DisplayAlert("Invalid Input", "Please enter a valid expense amount.", "OK");
+                await DisplayAlert("Invalid Action", "Set a monthly budget first!", "OK");
             }
         }
 

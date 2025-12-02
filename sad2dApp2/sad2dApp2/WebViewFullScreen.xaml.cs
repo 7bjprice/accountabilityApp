@@ -9,6 +9,27 @@ namespace sad2dApp2
         {
             InitializeComponent();
             LoadLocalHtml();
+            UpdateScoreInWebViewAsync();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            if (GotchiService.Current != null)
+            {
+                UpdateScoreInWebViewAsync();
+            }
+        }
+
+        private async void UpdateScoreInWebViewAsync()
+        {
+            if (myWebView != null)
+            {
+                string js = $"updateCurrentScore({(
+                    GotchiService.Current.Happiness + GotchiService.Current.Wellness) / 2
+                    });";
+                await myWebView.EvaluateJavaScriptAsync(js);
+            }
         }
 
         private async void LoadLocalHtml()
