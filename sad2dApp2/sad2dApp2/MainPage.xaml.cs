@@ -140,7 +140,7 @@ namespace sad2dApp2
             );
         }
 
-        private async Task UpdateScoreInWebViewAsync(int score)
+        private async Task UpdateScoreInWebViewAsync(float score)
         {
             if (myWebView != null)
             {
